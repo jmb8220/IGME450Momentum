@@ -10,7 +10,8 @@ using UnityEngine;
     Sprinting,
     Midair,
     Sliding,
-    Clambering
+    Clambering,
+    Grappling
 }
 
 public class CharacterMovement: MonoBehaviour
@@ -57,7 +58,7 @@ public class CharacterMovement: MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        Debug.Log("Current Speed: " + maxSprintSpeed);
+        //Debug.Log("Current Speed: " + maxSprintSpeed);
         //update state
         if (isGrounded && velocity.y < 0)
         {
@@ -72,7 +73,7 @@ public class CharacterMovement: MonoBehaviour
                 Debug.Log("Player is Sprinting!");
             }
             //check for arbitrary number as a minimum forward velocity to start sliding
-            else if (xzMovement.z > .8f && Input.GetKey(KeyCode.LeftControl))
+            else if (speed > 5f && Input.GetKey(KeyCode.LeftControl))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
@@ -88,6 +89,14 @@ public class CharacterMovement: MonoBehaviour
             
 
         }
+        //midair check, clamber will come later because I've never done it before
+        else if (!isGrounded)
+        {
+            currentState = PlayerState.Midair;
+            Debug.Log("Player is Falling/Midair!");
+
+        }
+        //else if (GRAPPLE CHECK WILL HAPPEN WHEN WE HAVE GRAPPLE SCRIPT)
 
         //get inputs
         xMoveInput = Input.GetAxis("Horizontal");
