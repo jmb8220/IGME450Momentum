@@ -48,15 +48,22 @@ public class CharacterMovement: MonoBehaviour
 
     bool isGrounded;
 
+    //Grapple node
+    private GrapplePhysics grapplingHook;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        grapplingHook = GetComponent<GrapplePhysics>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Setting default terminal velocity
+        terminalVelocity = -55.55f;
+
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         //Debug.Log("Current Speed: " + maxSprintSpeed);
         //update state
@@ -96,7 +103,12 @@ public class CharacterMovement: MonoBehaviour
             Debug.Log("Player is Falling/Midair!");
 
         }
-        //else if (GRAPPLE CHECK WILL HAPPEN WHEN WE HAVE GRAPPLE SCRIPT)
+        
+        //grappling check, overrides the current state if the GrapplePhysics object is enabled
+        if(grapplingHook.isGrappling)
+        {
+            currentState = PlayerState.Grappling;
+        }
 
         //get inputs
         xMoveInput = Input.GetAxis("Horizontal");
@@ -135,12 +147,23 @@ public class CharacterMovement: MonoBehaviour
             case PlayerState.Midair:
                 //we allow air control, just to a lesser extent
                 xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
+                controller.Move(xzMovement * speed/2 * Time.deltaTime);
                 break;
 
             case PlayerState.Sliding:
                 break;
 
             case PlayerState.Clambering:
+                break;
+
+            case PlayerState.Grappling:
+                //Reducing terminal velocity
+                terminalVelocity = -5.0f;
+
+                //grappling steering
+                xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
+                controller.Move(xzMovement * maxSprintSpeed * Time.deltaTime);
+
                 break;
 
         }
