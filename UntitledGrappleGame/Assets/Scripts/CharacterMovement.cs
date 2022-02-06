@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Player states
-[SerializeField] public enum PlayerState
+/*public enum PlayerState
 {
     Grounded,
     Walking,
@@ -12,19 +12,21 @@ using UnityEngine;
     Sliding,
     Clambering,
     Grappling
-}
+}*/
 
 public class CharacterMovement: MonoBehaviour
 {
     public PlayerState currentState;
+    public PlayerState prevState;
 
-    public bool grappling = false;
+    //public bool grappling = false;
 
     //physics parameters
-    [SerializeField] public float maxWalkSpeed = 7f;
-    [SerializeField] public float maxSprintSpeed = 12f;
-    [SerializeField] public float gravity = -30f;
-    [SerializeField] public float jumpImpulse = 15f;
+    public float maxWalkSpeed = 180.0f;
+    public float maxSprintSpeed = 220.0f;
+    public float gravity = -40f;
+    public float jumpImpulse = 500f;
+    public float frictionCoefficient = 5.0f;
 
     public float speed = 0;
 
@@ -34,13 +36,22 @@ public class CharacterMovement: MonoBehaviour
 
     float xMoveInput, zMoveInput;
 
-    float terminalVelocity = -55.55f;
+    float terminalVelocity = -200.55f;
+    float airMovementMaxDelta = 5.0f;
+
+
 
     public CharacterController controller;
 
-    //master movement vector
+    //master movement vector, velocity is gravity and momentum
+    //xzmovement is player input
+    //prevxzmovement stores the last movement vector to stop movement control as needed
     public Vector3 velocity = Vector3.zero;
+    public Vector3 prevVelocity = Vector3.zero;
     public Vector3 xzMovement = Vector3.zero;
+    public Vector3 prevXZMovement = Vector3.zero;
+    public Vector3 frictionVector = Vector3.zero;
+    public Vector3 normalizedVelocity = Vector3.zero;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -73,24 +84,24 @@ public class CharacterMovement: MonoBehaviour
             Debug.Log("Player is Grounded!");
 
             //check for walk and sprint
-            if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift))
+            if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding)
             {
                 currentState = PlayerState.Sprinting;
-                playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 100f, fovTime);
+                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 100f, fovTime);
                 Debug.Log("Player is Sprinting!");
             }
             //check for arbitrary number as a minimum forward velocity to start sliding
-            else if (speed > 5f && Input.GetKey(KeyCode.LeftControl))
+            else if (Input.GetKey(KeyCode.LeftControl))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
-                playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 102f, fovTime);
+                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 102f, fovTime);
                 Debug.Log("Player is Sliding!");
             }
             else
             {
                 currentState = PlayerState.Walking;
-                playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 95f, fovTime);
+                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 95f, fovTime);
                 Debug.Log("Player is Walking!");
             }
             
@@ -113,15 +124,14 @@ public class CharacterMovement: MonoBehaviour
         //get inputs
         xMoveInput = Input.GetAxis("Horizontal");
         zMoveInput = Input.GetAxis("Vertical");
-
+        xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
         //movement according to state
         //TODO: Update this when we add grappling because the params will need to be different
         switch (currentState)
         {
             case PlayerState.Walking:
-                speed = Mathf.Lerp(speed, maxWalkSpeed, 0.1f);
-                xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
-                controller.Move(xzMovement * speed * Time.deltaTime);
+                speed = Mathf.Lerp(speed, maxWalkSpeed, 7.0f);
+                velocity = Vector3.MoveTowards(velocity, xzMovement * speed * Time.deltaTime, maxWalkSpeed);
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -132,9 +142,8 @@ public class CharacterMovement: MonoBehaviour
                 break;
 
             case PlayerState.Sprinting:
-                speed = Mathf.Lerp(speed, maxSprintSpeed, 0.05f);
-                xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
-                controller.Move(xzMovement * speed * Time.deltaTime);
+                speed = Mathf.Lerp(speed, maxSprintSpeed, 9.0f);
+                velocity = Vector3.MoveTowards(velocity, xzMovement * speed * Time.deltaTime, maxSprintSpeed);
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -145,13 +154,43 @@ public class CharacterMovement: MonoBehaviour
                 break;
 
             case PlayerState.Midair:
+                //Store the previous velocity vector for delta clamping
+                if (prevState != PlayerState.Midair)
+                {
+                    prevVelocity = velocity;
+                }
+
                 //we allow air control, just to a lesser extent
                 xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
-                controller.Move(xzMovement * speed/2 * Time.deltaTime);
+
+                //Apply velocity of player movement to vector
+                velocity = Vector3.MoveTowards(velocity, (xzMovement * speed * Time.deltaTime), .5f);
+
+                //clamp velocity change to prevent infinite speed
+                velocity.x = Mathf.Clamp(velocity.x, prevVelocity.x - airMovementMaxDelta, prevVelocity.x - airMovementMaxDelta);
+                velocity.z = Mathf.Clamp(velocity.z, prevVelocity.z - airMovementMaxDelta, prevVelocity.z - airMovementMaxDelta);
                 break;
 
             case PlayerState.Sliding:
+                if (prevState == PlayerState.Sprinting)
+                {
+                    speed += 2.5f;
+                }
+                speed = Mathf.Lerp(speed, 0.0f, 0.02f);
+                velocity = Vector3.MoveTowards(velocity, xzMovement * speed * Time.deltaTime * 100f, 2f);
+                
+                if (speed == 0)
+                {
+                    currentState = PlayerState.Walking;
+                }
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    velocity.y += jumpImpulse;
+                    Debug.Log("Jumped!");
+                }
+
                 break;
+                
 
             case PlayerState.Clambering:
                 break;
@@ -161,23 +200,26 @@ public class CharacterMovement: MonoBehaviour
                 terminalVelocity = -5.0f;
 
                 //grappling steering
-                xzMovement = transform.right * xMoveInput + transform.forward * zMoveInput;
-                controller.Move(xzMovement * maxSprintSpeed * Time.deltaTime);
+
+                velocity = Vector3.MoveTowards(velocity, xzMovement * speed, .5f);
 
                 break;
 
         }
 
         //This will need to be modified conditional to the player's state of grappling, flying, etc
-        
 
-        
+        //calculate and apply friction
 
         //gravity is always a thing that happens
         velocity.y -= gravity * Time.deltaTime;
         velocity.y = Mathf.Clamp(velocity.y, terminalVelocity, 1000f);
 
         controller.Move(velocity * Time.deltaTime);
+
+        //store current movement direction and state
+        prevState = currentState;
+        prevXZMovement = xzMovement;
 
         //Debug.Log("Current Gravity Vector: " + velocity.y);
     }
