@@ -365,7 +365,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457104514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1167477568}
@@ -831,6 +831,13 @@ MonoBehaviour:
   currentState: 0
   prevState: 0
   playerHeight: 1.49
+  walkSpeed: 8
+  sprintSpeed: 11
+  crouchSpeed: 5
+  airSpeed: 5
+  grappleSpeed: 5
+  slideBoost: 20
+  jumpImpulse: 60
   physicsBody: {fileID: 1167477571}
   groundCheck: {fileID: 1624482381}
   groundDistance: 0.4
@@ -1078,7 +1085,7 @@ GameObject:
   - component: {fileID: 1594710458}
   - component: {fileID: 1594710457}
   - component: {fileID: 1594710456}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1637268962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1167477568}
