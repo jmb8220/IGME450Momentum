@@ -940,7 +940,7 @@ MonoBehaviour:
   playerCam: {fileID: 307516217}
   grapplePoint: {x: 0, y: 0, z: 0}
   isGrappling: 0
-  grappleStrength: 20
+  grappleStrength: 200
   canGrapple:
     serializedVersion: 2
     m_Bits: 8
