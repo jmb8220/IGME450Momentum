@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GrapplePhysics : MonoBehaviour
 {
-    private CharacterController controller;
+    private Rigidbody body;
     [SerializeField] private Transform playerCam;
 
     [SerializeField] public Vector3 grapplePoint;
@@ -17,7 +17,7 @@ public class GrapplePhysics : MonoBehaviour
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -49,7 +49,8 @@ public class GrapplePhysics : MonoBehaviour
         grappleDirection = grapplePoint - transform.position;
         grappleDirection.Normalize();
 
-        controller.Move(grappleDirection*grappleStrength*Time.deltaTime);
+        //Applying force
+        body.AddForce(grappleDirection*grappleStrength);
 
         //Ending the grapple
         if(Vector3.Distance(transform.position, grapplePoint) < 2)
