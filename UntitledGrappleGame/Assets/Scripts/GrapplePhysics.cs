@@ -34,11 +34,13 @@ public class GrapplePhysics : MonoBehaviour
                 isGrappling = true;
             }
         }
+    }
 
+    private void FixedUpdate()
+    {
         //Pulling the player
         if(isGrappling)
         {
-            Debug.Log("Grappling");
             Grapple();
         }
     }
