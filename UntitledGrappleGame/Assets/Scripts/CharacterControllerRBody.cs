@@ -29,8 +29,8 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float walkSpeed = 9f;
     [SerializeField] float sprintSpeed = 11f;
     [SerializeField] float crouchSpeed = 5f;
-    [SerializeField] float airSpeed = 5f;
-    [SerializeField] float grappleSpeed = 5f;
+    [SerializeField] float airSpeed = 7f;
+    [SerializeField] float grappleSpeed = 7f;
     [SerializeField] float slideBoost = 15f;
 
     float globalMovementMult = 10f;
@@ -43,6 +43,7 @@ public class CharacterControllerRBody : MonoBehaviour
     float airDragDown = 0.05f;
     float groundDrag = 6f;
     float slidingDrag = 2f;
+    float grappleDrag = 1f;
 
     float xMovementInput;
     float zMovementInput;
@@ -155,6 +156,7 @@ public class CharacterControllerRBody : MonoBehaviour
         if (grapplingHook.isGrappling)
         {
             currentState = PlayerState.Grappling;
+            ManageDrag(grappleDrag);
         }
 
         //find different movement vector if on slope
