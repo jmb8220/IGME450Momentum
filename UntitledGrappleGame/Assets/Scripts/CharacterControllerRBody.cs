@@ -22,16 +22,18 @@ public class CharacterControllerRBody : MonoBehaviour
     public PlayerState currentState;
     public PlayerState prevState;
 
+    public KeyCode prevKeyPressed;
+
     //make this dynamic once it works
     public float playerHeight = 1.0f;
 
     //acceleration multipliers
-    [SerializeField] float walkSpeed = 9f;
-    [SerializeField] float sprintSpeed = 11f;
+    [SerializeField] float walkSpeed = 10f;
+    [SerializeField] float sprintSpeed = 13f;
     [SerializeField] float crouchSpeed = 5f;
-    [SerializeField] float airSpeed = 7f;
-    [SerializeField] float grappleSpeed = 7f;
-    [SerializeField] float slideBoost = 15f;
+    [SerializeField] float airSpeed = 25f;
+    [SerializeField] float grappleSpeed = 25f;
+    [SerializeField] float slideBoost = 6f;
 
     float globalMovementMult = 10f;
     //float airMovementMult = 0.4f;
@@ -41,9 +43,11 @@ public class CharacterControllerRBody : MonoBehaviour
     //this is friction
     float airDragUp = 0.6f;
     float airDragDown = 0.05f;
-    float groundDrag = 6f;
+    float groundDrag = 7f;
     float slidingDrag = 2f;
     float grappleDrag = 1f;
+
+    float additionalGravity = 1.8f;
 
     float xMovementInput;
     float zMovementInput;
@@ -100,9 +104,15 @@ public class CharacterControllerRBody : MonoBehaviour
         //update state
         if (isGrounded)
         {
-            Debug.Log("Player is Grounded!");
+            //Debug.Log("Player is Grounded!");
 
-            //check for walk and sprint
+            //check if the player is not inputting anything and slow to zero if so
+            if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
+            {
+                //SlowToZero();
+            }
+
+                //check for walk and sprint
             if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding && !Input.GetKey(KeyCode.LeftControl))
             {
                 currentState = PlayerState.Sprinting;
@@ -110,7 +120,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 ManageDrag(groundDrag);
             }
             //check for arbitrary number as a minimum forward velocity to start sliding
-            else if (Input.GetKey(KeyCode.LeftControl) && physicsBody.velocity.magnitude >= 5f)
+            else if (Input.GetKey(KeyCode.LeftControl) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState ==  PlayerState.Midair))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
@@ -171,6 +181,7 @@ public class CharacterControllerRBody : MonoBehaviour
         MovePlayer();
 
         prevState = currentState;
+        
         //prevXZMovement = xzMovementInput;
 
     }
@@ -198,13 +209,21 @@ public class CharacterControllerRBody : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Walking:
-
+                //this impulse force is for faster directional change
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                {
+                    physicsBody.AddForce(movementInputDirection * globalMovementMult, ForceMode.Impulse);
+                }
                 physicsBody.AddForce(movementInputDirection * walkSpeed * globalMovementMult, ForceMode.Acceleration);
 
                 break;
 
             case PlayerState.Sprinting:
-
+                //this impulse force is for faster directional change
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                {
+                    physicsBody.AddForce(movementInputDirection * globalMovementMult, ForceMode.Impulse);
+                }
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
 
                 break;
@@ -212,6 +231,13 @@ public class CharacterControllerRBody : MonoBehaviour
             case PlayerState.Midair:
 
                 physicsBody.AddForce(movementInputDirection * airSpeed, ForceMode.Acceleration);
+
+                //fall faster up to terminal velocity
+                if (physicsBody.velocity.y >= -55.5f)
+                {
+                    physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
+                }
+                
 
                 break;
 
@@ -247,6 +273,8 @@ public class CharacterControllerRBody : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             physicsBody.AddForce(transform.up * jumpImpulse, ForceMode.Impulse);
+
+            //physicsBody.velocity = new Vector3(physicsBody.velocity.x, jumpImpulse/5, physicsBody.velocity.z);
         }
 
         if (isGrounded && OnSlope())
@@ -254,5 +282,14 @@ public class CharacterControllerRBody : MonoBehaviour
             physicsBody.AddForce(slopeMovementDirection * grappleSpeed, ForceMode.Acceleration);
         }
 
+    }
+
+    //slow the player to zero on no input when grounded, makes feel snappier
+    void SlowToZero()
+    {
+        if (Mathf.Abs(physicsBody.velocity.x) > 0.0f || Mathf.Abs(physicsBody.velocity.z) > 0.0f)
+        {
+            physicsBody.AddForce(-physicsBody.velocity * globalMovementMult * 2, ForceMode.Acceleration);
+        }
     }
 }

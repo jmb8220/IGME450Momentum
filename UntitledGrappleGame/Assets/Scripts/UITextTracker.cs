@@ -19,7 +19,7 @@ public class UITextTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //velocityTracker.GetComponent<Text>().text = "X: " + charMovement.velocity.x + "\nY: " + charMovement.velocity.y + "\nZ: " + charMovement.velocity.z;
+        velocityTracker.GetComponent<Text>().text = "X: " + charMovement.physicsBody.velocity.x + "\nY: " + charMovement.physicsBody.velocity.y + "\nZ: " + charMovement.physicsBody.velocity.z;
         stateTracker.GetComponent<Text>().text = "State: " + charMovement.currentState;
     }
 }
