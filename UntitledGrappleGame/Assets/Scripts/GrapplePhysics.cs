@@ -14,6 +14,13 @@ public class GrapplePhysics : MonoBehaviour
     [SerializeField] public LayerMask canGrapple;
     private Vector3 grappleDirection;
 
+    //Breaking grapple options
+    [SerializeField] private float grappleTimeLength = 4;
+    private float grappleTimer;
+
+    //Effects
+    [SerializeField] private LineRenderer rope;
+
 
     private void Start()
     {
@@ -23,15 +30,19 @@ public class GrapplePhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Choosing a grapple point
+        //Shooting or returning the grapple
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //Shooting grapple
-            RaycastHit ray;
-            if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, 50, canGrapple))
-            {
-                grapplePoint = ray.point;
-                isGrappling = true;
+            if(!isGrappling) {
+                //Shooting grapple
+                RaycastHit ray;
+                if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, 50, canGrapple))
+                {
+                    EnableGrapple(ray.point);
+                }
+            } else {
+                //Disabling the grapple
+                DisableGrapple();
             }
         }
     }
@@ -42,6 +53,11 @@ public class GrapplePhysics : MonoBehaviour
         if(isGrappling)
         {
             Grapple();
+
+            //Breaking the grapple after a set amount of time
+            if(grappleTimer <= Time.time) {
+                DisableGrapple();
+            }
         }
     }
 
@@ -57,7 +73,32 @@ public class GrapplePhysics : MonoBehaviour
         //Ending the grapple
         if(Vector3.Distance(transform.position, grapplePoint) < 2)
         {
-            isGrappling = false;
+            DisableGrapple();
         }
+
+        //Updating the line renderer
+        rope.SetPosition(0, transform.position);
+    }
+
+    public void EnableGrapple(Vector3 grapplePosition)
+    {
+        //Setting the position and enabling the bool
+        grapplePoint = grapplePosition;
+        isGrappling = true;
+
+        //Enabling the timer
+        grappleTimer = Time.time + grappleTimeLength;
+
+        //Line renderer
+        rope.gameObject.SetActive(true);
+        rope.SetPosition(0, transform.position);
+        rope.SetPosition(1, grapplePosition);
+    }
+
+    public void DisableGrapple()
+    {
+        isGrappling = false;
+
+        rope.gameObject.SetActive(false);
     }
 }
