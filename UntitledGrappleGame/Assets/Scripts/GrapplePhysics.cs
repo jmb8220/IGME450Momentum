@@ -30,9 +30,8 @@ public class GrapplePhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Shooting or returning the grapple
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
+        //Shooting ograpple
+        if(Input.GetKeyDown(KeyCode.Mouse0)) {
             if(!isGrappling) {
                 //Shooting grapple
                 RaycastHit ray;
@@ -40,7 +39,12 @@ public class GrapplePhysics : MonoBehaviour
                 {
                     EnableGrapple(ray.point);
                 }
-            } else {
+            }
+        }
+
+        //Breaking the grapple
+        if(Input.GetKeyUp(KeyCode.Mouse0)) {
+            if(isGrappling) {
                 //Disabling the grapple
                 DisableGrapple();
             }

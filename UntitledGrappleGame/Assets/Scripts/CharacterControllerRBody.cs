@@ -18,6 +18,7 @@ public enum PlayerState
 public class CharacterControllerRBody : MonoBehaviour
 {
     public Transform orientation;
+    public Camera playerCam;
 
     public PlayerState currentState;
     public PlayerState prevState;
@@ -116,7 +117,7 @@ public class CharacterControllerRBody : MonoBehaviour
             if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding && !Input.GetKey(KeyCode.LeftControl))
             {
                 currentState = PlayerState.Sprinting;
-                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 100f, fovTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 90f, 150*Time.deltaTime);
                 ManageDrag(groundDrag);
             }
             //check for arbitrary number as a minimum forward velocity to start sliding
@@ -124,7 +125,7 @@ public class CharacterControllerRBody : MonoBehaviour
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
-                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 102f, fovTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 95f, 150*Time.deltaTime);
                 ManageDrag(slidingDrag);
             }
             else if (currentState == PlayerState.Sliding)
@@ -141,7 +142,7 @@ public class CharacterControllerRBody : MonoBehaviour
             else
             {
                 currentState = PlayerState.Walking;
-                //playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, 95f, fovTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50*Time.deltaTime);
                 ManageDrag(groundDrag);
             }
 
