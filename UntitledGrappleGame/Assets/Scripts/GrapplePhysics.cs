@@ -10,8 +10,12 @@ public class GrapplePhysics : MonoBehaviour
     [SerializeField] public Vector3 grapplePoint;
     public bool isGrappling = false;
 
+    //Grapple test
+    RaycastHit ray;
+    private bool canGrapple = false;
+
     [SerializeField] public float grappleStrength = 10f;
-    [SerializeField] public LayerMask canGrapple;
+    [SerializeField] public LayerMask grappleSurfaces;
     private Vector3 grappleDirection;
 
     //Breaking grapple options
@@ -20,6 +24,7 @@ public class GrapplePhysics : MonoBehaviour
 
     //Effects
     [SerializeField] private LineRenderer rope;
+    [SerializeField] private Animator anim;
 
 
     private void Start()
@@ -30,15 +35,18 @@ public class GrapplePhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Shooting ograpple
+        //Knowing if the player can grapple
+        if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, 50, grappleSurfaces)) {
+            canGrapple = true;
+        } else {
+            canGrapple = false;
+        }
+
+        //Shooting grapple
         if(Input.GetKeyDown(KeyCode.Mouse0)) {
-            if(!isGrappling) {
+            if(!isGrappling && canGrapple) {
                 //Shooting grapple
-                RaycastHit ray;
-                if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, 50, canGrapple))
-                {
-                    EnableGrapple(ray.point);
-                }
+                EnableGrapple(ray.point);
             }
         }
 
@@ -49,6 +57,9 @@ public class GrapplePhysics : MonoBehaviour
                 DisableGrapple();
             }
         }
+
+        //Crosshair animation
+        anim.SetBool("CanGrapple", canGrapple);
     }
 
     private void FixedUpdate()
@@ -97,6 +108,9 @@ public class GrapplePhysics : MonoBehaviour
         rope.gameObject.SetActive(true);
         rope.SetPosition(0, transform.position);
         rope.SetPosition(1, grapplePosition);
+
+        //Animation
+        anim.SetTrigger("Grapple");
     }
 
     public void DisableGrapple()
@@ -104,5 +118,8 @@ public class GrapplePhysics : MonoBehaviour
         isGrappling = false;
 
         rope.gameObject.SetActive(false);
+
+        //Animation
+        anim.SetTrigger("GrappleBreak");
     }
 }
