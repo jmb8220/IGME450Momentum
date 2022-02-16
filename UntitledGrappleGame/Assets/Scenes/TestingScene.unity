@@ -1424,6 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 341921562}
   playerCam: {fileID: 307516219}
+  camContainer: {fileID: 258593526}
   currentState: 0
   prevState: 0
   prevKeyPressed: 0

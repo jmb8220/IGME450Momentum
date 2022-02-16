@@ -20,6 +20,8 @@ public class CharacterControllerRBody : MonoBehaviour
     public Transform orientation;
     public Camera playerCam;
 
+    public GameObject camContainer;
+
     public PlayerState currentState;
     public PlayerState prevState;
 
@@ -34,7 +36,7 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float crouchSpeed = 8f;
     [SerializeField] float airSpeed = 25f;
     [SerializeField] float grappleSpeed = 25f;
-    [SerializeField] float slideBoost = 6f;
+    [SerializeField] float slideBoost = 2f;
 
     float globalMovementMult = 10f;
     //float airMovementMult = 0.4f;
@@ -134,6 +136,10 @@ public class CharacterControllerRBody : MonoBehaviour
                 {
                     currentState = PlayerState.Crouching;
                 }
+                if (!Input.GetKey(KeyCode.LeftControl))
+                {
+                    currentState = PlayerState.Walking;
+                }
             }
             else if (Input.GetKey(KeyCode.LeftControl))
             {
@@ -192,7 +198,7 @@ public class CharacterControllerRBody : MonoBehaviour
         //get normalized inputs every update
         xMovementInput = Input.GetAxis("Horizontal");
         zMovementInput = Input.GetAxis("Vertical");
-        movementInputDirection = orientation.right * xMovementInput + orientation.forward * zMovementInput;
+        movementInputDirection = orientation.right * xMovementInput + camContainer.transform.forward * zMovementInput;
 
         movementInputDirection.Normalize();
     }
