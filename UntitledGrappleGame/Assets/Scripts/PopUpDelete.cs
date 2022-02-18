@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIHUD : MonoBehaviour
+public class PopUpDelete : MonoBehaviour
 {
     void Start()
     {
