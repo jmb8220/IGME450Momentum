@@ -67,7 +67,7 @@ public class CharacterControllerRBody : MonoBehaviour
 
     RaycastHit slopeHit;
 
-    
+    public AudioSource windLoop;
 
     bool isGrounded;
 
@@ -94,6 +94,9 @@ public class CharacterControllerRBody : MonoBehaviour
         physicsBody.freezeRotation = true;
 
         grapplingHook = GetComponent<GrapplePhysics>();
+
+        windLoop.volume = 0f;
+        windLoop.Play();
     }
 
     private void Update()
@@ -179,6 +182,18 @@ public class CharacterControllerRBody : MonoBehaviour
         //find different movement vector if on slope
         slopeMovementDirection = Vector3.ProjectOnPlane(movementInputDirection, slopeHit.normal);
         slopeMovementDirection.Normalize();
+
+
+        //wind audio loop when flying
+        if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
+        {
+            windLoop.volume = physicsBody.velocity.magnitude / 50;
+        }
+        else
+        {
+            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.2f, 0f));
+        }
+
     }
 
     //FixedUpdate follows physics ticks
@@ -188,8 +203,8 @@ public class CharacterControllerRBody : MonoBehaviour
         MovePlayer();
 
         prevState = currentState;
-        
-        //prevXZMovement = xzMovementInput;
+
+       
 
     }
 

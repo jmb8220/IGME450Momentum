@@ -26,6 +26,9 @@ public class GrapplePhysics : MonoBehaviour
     [SerializeField] private LineRenderer rope;
     [SerializeField] private Animator anim;
 
+    public AudioSource grappleShot;
+    public AudioSource grappleRetract;
+
 
     private void Start()
     {
@@ -45,6 +48,9 @@ public class GrapplePhysics : MonoBehaviour
         //Shooting grapple
         if(Input.GetKeyDown(KeyCode.Mouse0)) {
             if(!isGrappling && canGrapple) {
+
+                //grapple sound
+                grappleShot.Play();
                 //Shooting grapple
                 EnableGrapple(ray.point);
             }
@@ -53,6 +59,9 @@ public class GrapplePhysics : MonoBehaviour
         //Breaking the grapple
         if(Input.GetKeyUp(KeyCode.Mouse0)) {
             if(isGrappling) {
+
+                //grapple retraction sound
+                grappleRetract.Play();
                 //Disabling the grapple
                 DisableGrapple();
             }
