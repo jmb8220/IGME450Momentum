@@ -187,11 +187,15 @@ public class CharacterControllerRBody : MonoBehaviour
         //wind audio loop when flying
         if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
         {
-            windLoop.volume = physicsBody.velocity.magnitude / 50;
+            if (windLoop.volume < physicsBody.velocity.magnitude / 70)
+            {
+                windLoop.volume += 0.03f;
+            }
+                
         }
         else
         {
-            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.2f, 0f));
+            StartCoroutine(FadeAudioSource.StartFade(windLoop, .7f, 0f));
         }
 
     }
