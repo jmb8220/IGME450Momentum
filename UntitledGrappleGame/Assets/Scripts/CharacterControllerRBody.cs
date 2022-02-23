@@ -38,7 +38,7 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float grappleSpeed = 25f;
     [SerializeField] float slideBoost = 2f;
 
-    float globalMovementMult = 10f;
+    float globalMovementMult = 13f;
     //float airMovementMult = 0.4f;
 
     [SerializeField] float jumpImpulse = 200f;
@@ -46,7 +46,7 @@ public class CharacterControllerRBody : MonoBehaviour
     //this is friction
     float airDragUp = 0.6f;
     float airDragDown = 0.05f;
-    float groundDrag = 7f;
+    float groundDrag = 9f;
     float slidingDrag = 2f;
     float grappleDrag = 1f;
 
@@ -70,6 +70,8 @@ public class CharacterControllerRBody : MonoBehaviour
     public AudioSource windLoop;
 
     bool isGrounded;
+
+    bool hasMaxedWindVolume;
 
     //Grapple node
     private GrapplePhysics grapplingHook;
@@ -111,6 +113,7 @@ public class CharacterControllerRBody : MonoBehaviour
         if (isGrounded)
         {
             //Debug.Log("Player is Grounded!");
+            hasMaxedWindVolume = false;
 
             //check if the player is not inputting anything and slow to zero if so
             if ((!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) && !Input.GetKey(KeyCode.Space))
@@ -184,18 +187,28 @@ public class CharacterControllerRBody : MonoBehaviour
         slopeMovementDirection.Normalize();
 
 
-        //wind audio loop when flying
+        //wind audio loop when flying, dynamic to player flight speed
         if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
         {
-            if (windLoop.volume < physicsBody.velocity.magnitude / 70)
+            if (windLoop.volume < physicsBody.velocity.magnitude / 80)
             {
-                windLoop.volume += 0.03f;
+                windLoop.volume += 0.015f;
             }
-                
+            else
+            {
+                hasMaxedWindVolume = true;
+            }
+
+            if (hasMaxedWindVolume)
+            {
+                windLoop.volume = physicsBody.velocity.magnitude / 80;
+            }
+            
+
         }
         else
         {
-            StartCoroutine(FadeAudioSource.StartFade(windLoop, .7f, 0f));
+            StartCoroutine(FadeAudioSource.StartFade(windLoop, .5f, 0f));
         }
 
     }
