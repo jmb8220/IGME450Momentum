@@ -31,26 +31,27 @@ public class CharacterControllerRBody : MonoBehaviour
     public float playerHeight = 1.0f;
 
     //acceleration multipliers
-    [SerializeField] float walkSpeed = 12f;
-    [SerializeField] float sprintSpeed = 15f;
-    [SerializeField] float crouchSpeed = 8f;
-    [SerializeField] float airSpeed = 25f;
-    [SerializeField] float grappleSpeed = 25f;
-    [SerializeField] float slideBoost = 2f;
+    float walkSpeed = 12f;
+    float sprintSpeed = 15f;
+    float crouchSpeed = 8f;
+    float airSpeedUp = 2.5f;
+    float airSpeedDown = 0.7f;
+    float grappleSpeed = 50f;
+    float slideBoost = 1f;
 
     float globalMovementMult = 13f;
     //float airMovementMult = 0.4f;
 
-    [SerializeField] float jumpImpulse = 200f;
+    float jumpImpulse = 60f;
 
     //this is friction
-    float airDragUp = 0.6f;
+    float airDragUp = 1.1f;
     float airDragDown = 0.05f;
-    float groundDrag = 9f;
+    float groundDrag = 8.5f;
     float slidingDrag = 2f;
     float grappleDrag = 1f;
 
-    float additionalGravity = 1.8f;
+    float additionalGravity = 13f;
 
     float xMovementInput;
     float zMovementInput;
@@ -118,7 +119,7 @@ public class CharacterControllerRBody : MonoBehaviour
             //check if the player is not inputting anything and slow to zero if so
             if ((!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) && !Input.GetKey(KeyCode.Space))
             {
-                SlowToZero();
+                //SlowToZero();
             }
 
                 //check for walk and sprint
@@ -138,7 +139,7 @@ public class CharacterControllerRBody : MonoBehaviour
             }
             else if (currentState == PlayerState.Sliding)
             {
-                if (physicsBody.velocity.x <= 0.1f)
+                if (physicsBody.velocity.x <= 0.03f)
                 {
                     currentState = PlayerState.Crouching;
                 }
@@ -251,7 +252,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 //this impulse force is for faster directional change
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
                 {
-                    physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
+                    physicsBody.AddForce(movementInputDirection * globalMovementMult * 3, ForceMode.Impulse);
                 }
                 physicsBody.AddForce(movementInputDirection * walkSpeed * globalMovementMult, ForceMode.Acceleration);
 
@@ -261,7 +262,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 //this impulse force is for faster directional change
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
                 {
-                    physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
+                    physicsBody.AddForce(movementInputDirection * globalMovementMult * 3, ForceMode.Impulse);
                 }
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
 
@@ -269,10 +270,35 @@ public class CharacterControllerRBody : MonoBehaviour
 
             case PlayerState.Midair:
 
-                physicsBody.AddForce(movementInputDirection * airSpeed, ForceMode.Acceleration);
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    physicsBody.AddForce(camContainer.transform.forward * globalMovementMult, ForceMode.Impulse);
+                }
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    physicsBody.AddForce(-orientation.right * globalMovementMult, ForceMode.Impulse);
+                }
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    physicsBody.AddForce(-camContainer.transform.forward * globalMovementMult, ForceMode.Impulse);
+                }
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    physicsBody.AddForce(orientation.right * globalMovementMult, ForceMode.Impulse);
+                }
+
+                if (physicsBody.velocity.y > 0)
+                {
+                    physicsBody.AddForce(movementInputDirection * airSpeedUp * globalMovementMult, ForceMode.Acceleration);
+                }
+                else
+                {
+                    physicsBody.AddForce(movementInputDirection * airSpeedDown * globalMovementMult, ForceMode.Acceleration);
+                }
+
 
                 //fall faster up to terminal velocity
-                if (physicsBody.velocity.y >= -55.5f && physicsBody.velocity.y < 0f)
+                if (physicsBody.velocity.y >= -105.5f )
                 {
                     physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
                 }
@@ -311,6 +337,7 @@ public class CharacterControllerRBody : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            physicsBody.AddForce(transform.up * jumpImpulse, ForceMode.Impulse);
             physicsBody.AddForce(transform.up * jumpImpulse, ForceMode.Impulse);
 
             //physicsBody.velocity = new Vector3(physicsBody.velocity.x, jumpImpulse/5, physicsBody.velocity.z);

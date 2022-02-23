@@ -1687,16 +1687,9 @@ MonoBehaviour:
   prevState: 0
   prevKeyPressed: 0
   playerHeight: 1.49
-  walkSpeed: 8
-  sprintSpeed: 11
-  crouchSpeed: 5
-  airSpeed: 5
-  grappleSpeed: 35
-  slideBoost: 20
-  jumpImpulse: 60
   physicsBody: {fileID: 1167477571}
   groundCheck: {fileID: 1624482381}
-  groundDistance: 0.4
+  groundDistance: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 72
