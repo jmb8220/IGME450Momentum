@@ -74,6 +74,10 @@ public class CharacterControllerRBody : MonoBehaviour
     //Grapple node
     private GrapplePhysics grapplingHook;
 
+    //Dash effect components
+    [SerializeField] private Transform speedLinesContainer;
+    [SerializeField] private ParticleSystem speedEffect;
+
     //slope detection
     private bool OnSlope()
     {
@@ -204,7 +208,7 @@ public class CharacterControllerRBody : MonoBehaviour
 
         prevState = currentState;
 
-       
+        SpeedLines();
 
     }
 
@@ -313,5 +317,25 @@ public class CharacterControllerRBody : MonoBehaviour
         {
             physicsBody.AddForce(-physicsBody.velocity * globalMovementMult * 1.5f, ForceMode.Acceleration);
         }
+    }
+
+    //Dash Effect Function
+    void SpeedLines()
+    {
+        //Knowing if the lines show up
+        if(physicsBody.velocity.magnitude < 15) {
+            //Stopping the effect
+            if(speedEffect.isPlaying)
+                speedEffect.Stop();
+
+            return;
+        }
+
+        //Play the effect
+        if(!speedEffect.isPlaying)
+            speedEffect.Play();
+
+        //Pointing in the proper direction
+        speedLinesContainer.LookAt(transform.position + physicsBody.velocity);
     }
 }
