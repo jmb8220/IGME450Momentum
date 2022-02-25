@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Player states
 public enum PlayerState
@@ -21,6 +22,10 @@ public class CharacterControllerRBody : MonoBehaviour
     public Camera playerCam;
 
     public GameObject camContainer;
+
+    //air time text object
+    [SerializeField]
+    Canvas airTimer;
 
     public PlayerState currentState;
     public PlayerState prevState;
@@ -70,6 +75,12 @@ public class CharacterControllerRBody : MonoBehaviour
     public AudioSource windLoop;
 
     bool isGrounded;
+
+    //Clamber Information
+    [SerializeField] private float clamberDistance = 5.0f;
+    [SerializeField] public LayerMask clamberSurfaces;
+    [SerializeField] float clamberImpulse = 200f;
+    private bool clambered = false;
 
     //Grapple node
     private GrapplePhysics grapplingHook;
@@ -122,19 +133,19 @@ public class CharacterControllerRBody : MonoBehaviour
                 SlowToZero();
             }
 
-                //check for walk and sprint
+            //check for walk and sprint
             if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding && !Input.GetKey(KeyCode.LeftControl))
             {
                 currentState = PlayerState.Sprinting;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 90f, 150*Time.deltaTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 90f, 150 * Time.deltaTime);
                 ManageDrag(groundDrag);
             }
             //check for arbitrary number as a minimum forward velocity to start sliding
-            else if (Input.GetKey(KeyCode.LeftControl) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState ==  PlayerState.Midair))
+            else if (Input.GetKey(KeyCode.LeftControl) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 95f, 150*Time.deltaTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 95f, 150 * Time.deltaTime);
                 ManageDrag(slidingDrag);
             }
             else if (currentState == PlayerState.Sliding)
@@ -155,10 +166,11 @@ public class CharacterControllerRBody : MonoBehaviour
             else
             {
                 currentState = PlayerState.Walking;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50*Time.deltaTime);
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50 * Time.deltaTime);
                 ManageDrag(groundDrag);
             }
 
+            clambered = false;
         }
         //midair check, clamber will come later because I've never done it before
         else if (!isGrounded)
@@ -173,7 +185,13 @@ public class CharacterControllerRBody : MonoBehaviour
             {
                 ManageDrag(airDragDown);
             }
-            
+
+            RaycastHit clamberWall;
+
+            if (Physics.Raycast(transform.position, playerCam.transform.forward, out clamberWall, clamberDistance, clamberSurfaces) && Input.GetKeyDown(KeyCode.Space) && !clambered)
+            {
+                currentState = PlayerState.Clambering;
+            }
         }
 
         //grappling check, overrides the current state if the GrapplePhysics object is enabled
@@ -242,6 +260,8 @@ public class CharacterControllerRBody : MonoBehaviour
                 }
                 physicsBody.AddForce(movementInputDirection * walkSpeed * globalMovementMult, ForceMode.Acceleration);
 
+                //pause air timer
+                airTimer.GetComponent<Timer>().paused = true;
                 break;
 
             case PlayerState.Sprinting:
@@ -252,6 +272,8 @@ public class CharacterControllerRBody : MonoBehaviour
                 }
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
 
+                //pause air timer
+                airTimer.GetComponent<Timer>().paused = true;
                 break;
 
             case PlayerState.Midair:
@@ -263,8 +285,9 @@ public class CharacterControllerRBody : MonoBehaviour
                 {
                     physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
                 }
-                
 
+                //resume air timer
+                airTimer.GetComponent<Timer>().paused = false;
                 break;
 
             case PlayerState.Sliding:
@@ -274,24 +297,34 @@ public class CharacterControllerRBody : MonoBehaviour
                     physicsBody.AddForce(orientation.transform.forward * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
+                //pause air timer
+                airTimer.GetComponent<Timer>().paused = true;
                 break;
 
             case PlayerState.Crouching:
 
                 physicsBody.AddForce(movementInputDirection * crouchSpeed * globalMovementMult, ForceMode.Acceleration);
 
-                
+                //pause air timer
+                airTimer.GetComponent<Timer>().paused = true;
                 break;
 
 
             case PlayerState.Clambering:
+                physicsBody.AddForce(transform.up * clamberImpulse, ForceMode.Impulse);
 
+                clambered = true;
+
+                //pause air timer
+                airTimer.GetComponent<Timer>().paused = true;
                 break;
 
             case PlayerState.Grappling:
 
                 physicsBody.AddForce(movementInputDirection * grappleSpeed, ForceMode.Acceleration);
 
+                //resume air timer
+                airTimer.GetComponent<Timer>().paused = false;
                 break;
 
         }

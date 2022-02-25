@@ -7,11 +7,14 @@ public class Timer : MonoBehaviour
 {
     private float timer;
 
+    public bool paused;
+
     [SerializeField]
-    private Text minutes;
+    private Text timerText;
+
     [SerializeField]
-    private Text seconds;
-    
+    private string marker;
+
     void Start()
     {
         ResetTimer();
@@ -19,21 +22,33 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        if (!paused)
+        {
+            timer += Time.deltaTime;
+        }
         UpdateTimerDisplay();
     }
 
+    //resets timer to 0
     private void ResetTimer()
     {
         timer = 0;
     }
     
+    //updates text object with formatted information
     private void UpdateTimerDisplay()
     {
+        //calculates and rounds minutes and seconds
         float min = Mathf.FloorToInt(timer / 60);
         float sec = Mathf.Round((timer % 60)*1000.0f)/1000.0f;
 
-        string currentTime = string.Format("{00:00}:{1:00.00}", min, sec);
-        minutes.text = currentTime;
+        string currentTime = string.Format("{00:00}:{1:00.00}", min, sec); ;
+
+        //create string with 00:00.00 format and update text
+        if (marker.Length > 0)
+        {
+            currentTime = marker + ": " + currentTime;
+        }
+        timerText.text = currentTime;
     }
 }

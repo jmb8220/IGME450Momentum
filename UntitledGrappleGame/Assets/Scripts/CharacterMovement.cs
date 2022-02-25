@@ -39,8 +39,6 @@ public class CharacterMovement: MonoBehaviour
     float terminalVelocity = -200.55f;
     float airMovementMaxDelta = 5.0f;
 
-
-
     public CharacterController controller;
 
     //master movement vector, velocity is gravity and momentum
@@ -138,7 +136,6 @@ public class CharacterMovement: MonoBehaviour
                     velocity.y += jumpImpulse;
                     Debug.Log("Jumped!");
                 }
-
                 break;
 
             case PlayerState.Sprinting:
@@ -150,7 +147,6 @@ public class CharacterMovement: MonoBehaviour
                     velocity.y += jumpImpulse;
                     Debug.Log("Jumped!");
                 }
-
                 break;
 
             case PlayerState.Midair:
@@ -188,7 +184,6 @@ public class CharacterMovement: MonoBehaviour
                     velocity.y += jumpImpulse;
                     Debug.Log("Jumped!");
                 }
-
                 break;
                 
 
@@ -202,7 +197,6 @@ public class CharacterMovement: MonoBehaviour
                 //grappling steering
 
                 velocity = Vector3.MoveTowards(velocity, xzMovement * speed, .5f);
-
                 break;
 
         }
