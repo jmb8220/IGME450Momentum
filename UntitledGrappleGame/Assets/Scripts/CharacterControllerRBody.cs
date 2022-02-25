@@ -323,8 +323,11 @@ public class CharacterControllerRBody : MonoBehaviour
 
                 physicsBody.AddForce(movementInputDirection * grappleSpeed, ForceMode.Acceleration);
 
-                //resume air timer
-                airTimer.GetComponent<Timer>().paused = false;
+                //resume air timer if in air
+                if (!isGrounded)
+                    airTimer.GetComponent<Timer>().paused = false;
+                else
+                    airTimer.GetComponent<Timer>().paused = true;
                 break;
 
         }
