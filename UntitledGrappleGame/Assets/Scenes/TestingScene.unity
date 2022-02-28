@@ -1808,10 +1808,10 @@ MonoBehaviour:
   walkSpeed: 8
   sprintSpeed: 11
   crouchSpeed: 5
-  airSpeed: 5
-  grappleSpeed: 35
+  airSpeed: 4
+  grappleSpeed: 24
   slideBoost: 20
-  jumpImpulse: 60
+  jumpImpulse: 80
   physicsBody: {fileID: 1167477571}
   groundCheck: {fileID: 1624482381}
   groundDistance: 0.4
@@ -1841,7 +1841,7 @@ MonoBehaviour:
   playerCam: {fileID: 307516217}
   grapplePoint: {x: 0, y: 0, z: 0}
   isGrappling: 0
-  grappleStrength: 200
+  grappleStrength: 125
   grappleSurfaces:
     serializedVersion: 2
     m_Bits: 8
@@ -1865,7 +1865,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &1181584387 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: afe7e25bcc7fd374d8d8e5b2eabf8627, type: 3}
@@ -2791,7 +2791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594710455}
   m_LocalRotation: {x: -0.13517529, y: -0, z: -0, w: 0.9908218}
-  m_LocalPosition: {x: 0, y: 1.54, z: 16.67}
+  m_LocalPosition: {x: 0, y: 3.5, z: 41.4}
   m_LocalScale: {x: 9.86, y: 0.19, z: 17.78}
   m_Children: []
   m_Father: {fileID: 0}
