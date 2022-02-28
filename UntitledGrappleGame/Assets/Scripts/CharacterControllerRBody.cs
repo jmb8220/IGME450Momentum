@@ -49,8 +49,8 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float jumpImpulse = 200f;
 
     //this is friction
-    float airDragUp = 0.6f;
-    float airDragDown = 0.05f;
+    float airDragUp = 1.2f;
+    float airDragDown = 0.1f;
     float groundDrag = 7f;
     float slidingDrag = 2f;
     float grappleDrag = 1f;

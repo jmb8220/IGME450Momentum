@@ -9,6 +9,7 @@ public class GrapplePhysics : MonoBehaviour
 
     [SerializeField] public Vector3 grapplePoint;
     public bool isGrappling = false;
+    private float startingY;
 
     //Grapple test
     RaycastHit ray;
@@ -91,6 +92,9 @@ public class GrapplePhysics : MonoBehaviour
         grappleDirection = grapplePoint - transform.position;
         grappleDirection.Normalize();
 
+        //Increasing vertical strength
+        grappleDirection = new Vector3(grappleDirection.x, grappleDirection.y*2, grappleDirection.z);
+
         //Applying force
         body.AddForce(grappleDirection*grappleStrength);
 
@@ -118,12 +122,22 @@ public class GrapplePhysics : MonoBehaviour
         rope.SetPosition(0, transform.position);
         rope.SetPosition(1, grapplePosition);
 
+        //Marking the initial y position of the player
+        startingY = transform.position.y;
+
         //Animation
         anim.SetTrigger("Grapple");
     }
 
     public void DisableGrapple()
     {
+        //Applying an upward boost to the player
+        /*
+        body.velocity = new Vector3(body.velocity.x,
+            (grapplePoint.y - startingY - (grapplePoint.y - transform.position.y))*1.25f,
+            body.velocity.z);*/
+
+        //Disabling grapple bool
         isGrappling = false;
 
         rope.gameObject.SetActive(false);
