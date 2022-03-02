@@ -23,6 +23,8 @@ public class CharacterControllerRBody : MonoBehaviour
 
     public GameObject camContainer;
 
+    private AudioManager audioManager;
+
     //air time text object
     [SerializeField]
     Canvas airTimer;
@@ -74,7 +76,29 @@ public class CharacterControllerRBody : MonoBehaviour
 
     public AudioSource windLoop;
 
+    //audio intervals
+    float walkInterval = 0.4f;
+    float sprintInterval = 0.32f;
+    float crouchInterval = 0.65f;
+
+    public AudioSource[] steps;
+    public AudioSource[] clothSteps;
+
+    //randomization helpers for footsteps
+    int rand1;
+    int rand2;
+    int prevRand1;
+    int prevRand2;
+
+    IEnumerator walkSoundCoroutine;
+    IEnumerator sprintSoundCoroutine;
+    IEnumerator crouchSoundCoroutine;
+    private bool isPlayingWalkSounds;
+    private bool isPlayingSprintSounds;
+    private bool isPlayingCrouchSounds;
+
     bool isGrounded;
+    bool hasReachedMaxWindVolume;
 
     //Clamber Information
     [SerializeField] private float clamberDistance = 5.0f;
@@ -102,6 +126,92 @@ public class CharacterControllerRBody : MonoBehaviour
         return false;
     }
 
+    void PlayRandomStep()
+    {
+
+        rand1 = Random.Range(0, steps.Length);
+        rand2 = Random.Range(0, clothSteps.Length);
+
+        //ensure no direct repeats
+        while (rand1 == prevRand1)
+        {
+            rand1 = Random.Range(0, steps.Length);
+        }
+        while (rand2 == prevRand2)
+        {
+            rand2 = Random.Range(0, steps.Length);
+        }
+
+        prevRand1 = rand1;
+        prevRand2 = rand2;
+
+        Debug.Log("Playing FS sounds at array position " + rand1 + " and " + rand2);
+
+        steps[rand1].Play();
+        clothSteps[rand2].Play();
+    }
+
+    //handles footstep timing
+    public IEnumerator SprintStepSound(float interval)
+    {
+        if (currentState == PlayerState.Sprinting)
+        {
+            Debug.Log("Fired Sprinting");
+            PlayRandomStep();
+            yield return new WaitForSeconds(interval);
+            StartCoroutine(SprintStepSound(sprintInterval));
+        }
+        else
+        {
+            isPlayingSprintSounds = false;
+            yield break;
+        }
+
+    }
+
+    public IEnumerator WalkStepSound(float interval)
+    {
+        if (currentState == PlayerState.Walking )
+        {
+            if (physicsBody.velocity.x != 0f || physicsBody.velocity.y != 0f)
+           {
+                Debug.Log("Fired Walking");
+                PlayRandomStep();
+                
+            }
+            yield return new WaitForSeconds(interval);
+            StartCoroutine(WalkStepSound(walkInterval));
+
+        }
+        else
+        {
+            isPlayingWalkSounds = false;
+            yield break;
+        }
+    }
+
+    public IEnumerator CrouchStepSound(float interval)
+    {
+        if (currentState == PlayerState.Crouching)
+        {
+            if (physicsBody.velocity.x != 0f || physicsBody.velocity.y != 0f)
+            {
+                Debug.Log("Fired Crouching");
+                PlayRandomStep();
+            }
+            yield return new WaitForSeconds(interval);
+            StartCoroutine(CrouchStepSound(crouchInterval));
+        }
+        else
+        {
+            isPlayingCrouchSounds = false;
+            yield break;
+        }
+
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -109,6 +219,11 @@ public class CharacterControllerRBody : MonoBehaviour
         physicsBody.freezeRotation = true;
 
         grapplingHook = GetComponent<GrapplePhysics>();
+        audioManager = GetComponent<AudioManager>();
+
+        walkSoundCoroutine = WalkStepSound(walkInterval);
+        sprintSoundCoroutine = SprintStepSound(sprintInterval);
+        crouchSoundCoroutine = CrouchStepSound(crouchInterval);
 
         windLoop.volume = 0f;
         windLoop.Play();
@@ -131,11 +246,14 @@ public class CharacterControllerRBody : MonoBehaviour
             if ((!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) && !Input.GetKey(KeyCode.Space))
             {
                 SlowToZero();
+
             }
 
             //check for walk and sprint
             if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding && !Input.GetKey(KeyCode.LeftControl))
             {
+                
+
                 currentState = PlayerState.Sprinting;
                 playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 90f, 150 * Time.deltaTime);
                 ManageDrag(groundDrag);
@@ -150,9 +268,12 @@ public class CharacterControllerRBody : MonoBehaviour
             }
             else if (currentState == PlayerState.Sliding)
             {
-                if (physicsBody.velocity.x <= 0.1f)
+                if (physicsBody.velocity.x <= 0.1f && physicsBody.velocity.y <= 0.1f)
                 {
                     currentState = PlayerState.Crouching;
+                    ManageDrag(groundDrag);
+                    //Steps
+                    
                 }
                 if (!Input.GetKey(KeyCode.LeftControl))
                 {
@@ -165,6 +286,8 @@ public class CharacterControllerRBody : MonoBehaviour
             }
             else
             {
+                
+
                 currentState = PlayerState.Walking;
                 playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50 * Time.deltaTime);
                 ManageDrag(groundDrag);
@@ -175,6 +298,7 @@ public class CharacterControllerRBody : MonoBehaviour
         //midair check, clamber will come later because I've never done it before
         else if (!isGrounded)
         {
+
             currentState = PlayerState.Midair;
             Debug.Log("Player is In Air!");
             if (physicsBody.velocity.y > 0f)
@@ -197,6 +321,7 @@ public class CharacterControllerRBody : MonoBehaviour
         //grappling check, overrides the current state if the GrapplePhysics object is enabled
         if (grapplingHook.isGrappling)
         {
+
             currentState = PlayerState.Grappling;
             ManageDrag(grappleDrag);
         }
@@ -209,11 +334,26 @@ public class CharacterControllerRBody : MonoBehaviour
         //wind audio loop when flying
         if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
         {
-            windLoop.volume = physicsBody.velocity.magnitude / 50;
+            if (windLoop.volume < physicsBody.velocity.magnitude / 70)
+            {
+                windLoop.volume += 0.03f;
+            }
+            else
+            {
+                hasReachedMaxWindVolume = true;
+            }
+
+            if (hasReachedMaxWindVolume)
+            {
+                windLoop.volume = physicsBody.velocity.magnitude / 70;
+            }
+            
         }
         else
         {
-            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.2f, 0f));
+
+            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.3f, 0f));
+            hasReachedMaxWindVolume = false;
         }
 
     }
@@ -257,8 +397,16 @@ public class CharacterControllerRBody : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
                 {
                     physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
+
                 }
                 physicsBody.AddForce(movementInputDirection * walkSpeed * globalMovementMult, ForceMode.Acceleration);
+
+                //Steps
+                if (!isPlayingWalkSounds)
+                {
+                    StartCoroutine(WalkStepSound(walkInterval));
+                    isPlayingWalkSounds = true;
+                }
 
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
@@ -271,6 +419,13 @@ public class CharacterControllerRBody : MonoBehaviour
                     physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
                 }
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
+                //Steps
+                if (!isPlayingSprintSounds)
+                {
+                    StartCoroutine(SprintStepSound(sprintInterval));
+                    isPlayingSprintSounds = true;
+                }
+
 
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
@@ -304,6 +459,12 @@ public class CharacterControllerRBody : MonoBehaviour
             case PlayerState.Crouching:
 
                 physicsBody.AddForce(movementInputDirection * crouchSpeed * globalMovementMult, ForceMode.Acceleration);
+                if (!isPlayingCrouchSounds)
+                {
+                    StartCoroutine(CrouchStepSound(crouchInterval));
+                    isPlayingCrouchSounds = true;
+                }
+
 
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
