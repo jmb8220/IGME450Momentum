@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GrapplePhysics : MonoBehaviour
 {
@@ -30,10 +31,15 @@ public class GrapplePhysics : MonoBehaviour
     public AudioSource grappleShot;
     public AudioSource grappleRetract;
 
+    //Grapple Count
+    [SerializeField] private Text gCounter;
+    public int gCount;
+
 
     private void Start()
     {
         body = GetComponent<Rigidbody>();
+        UpdateGrappleCount();
     }
 
     // Update is called once per frame
@@ -54,6 +60,9 @@ public class GrapplePhysics : MonoBehaviour
                 grappleShot.Play();
                 //Shooting grapple
                 EnableGrapple(ray.point);
+
+                gCount++;
+                UpdateGrappleCount();
             }
         }
 
@@ -144,5 +153,10 @@ public class GrapplePhysics : MonoBehaviour
 
         //Animation
         anim.SetTrigger("GrappleBreak");
+    }
+
+    public void UpdateGrappleCount()
+    {
+        gCounter.text = "Grapples Used: " + gCount;
     }
 }

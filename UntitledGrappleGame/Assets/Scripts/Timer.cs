@@ -30,7 +30,7 @@ public class Timer : MonoBehaviour
     }
 
     //resets timer to 0
-    private void ResetTimer()
+    public void ResetTimer()
     {
         timer = 0;
     }
