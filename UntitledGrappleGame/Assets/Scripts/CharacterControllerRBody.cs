@@ -75,10 +75,13 @@ public class CharacterControllerRBody : MonoBehaviour
     RaycastHit slopeHit;
 
     public AudioSource windLoop;
+    public AudioSource grappleLoop;
+    public AudioSource jumpFall;
+    public AudioSource jump;
 
     //audio intervals
     float walkInterval = 0.4f;
-    float sprintInterval = 0.32f;
+    float sprintInterval = 0.37f;
     float crouchInterval = 0.65f;
 
     public AudioSource[] steps;
@@ -90,10 +93,12 @@ public class CharacterControllerRBody : MonoBehaviour
     int prevRand1;
     int prevRand2;
 
-    IEnumerator walkSoundCoroutine;
+    float randVolume;
+
+
     IEnumerator sprintSoundCoroutine;
     IEnumerator crouchSoundCoroutine;
-    private bool isPlayingWalkSounds;
+
     private bool isPlayingSprintSounds;
     private bool isPlayingCrouchSounds;
 
@@ -132,6 +137,8 @@ public class CharacterControllerRBody : MonoBehaviour
         rand1 = Random.Range(0, steps.Length);
         rand2 = Random.Range(0, clothSteps.Length);
 
+        randVolume = Random.Range(0.2f, 0.3f);
+
         //ensure no direct repeats
         while (rand1 == prevRand1)
         {
@@ -145,49 +152,27 @@ public class CharacterControllerRBody : MonoBehaviour
         prevRand1 = rand1;
         prevRand2 = rand2;
 
-        Debug.Log("Playing FS sounds at array position " + rand1 + " and " + rand2);
-
+        steps[rand1].volume = randVolume;
         steps[rand1].Play();
+        clothSteps[rand2].volume = randVolume;
         clothSteps[rand2].Play();
     }
 
     //handles footstep timing
-    public IEnumerator SprintStepSound(float interval)
+    public IEnumerator SprintStepSound()
     {
         if (currentState == PlayerState.Sprinting)
         {
+            isPlayingSprintSounds = true;
             Debug.Log("Fired Sprinting");
             PlayRandomStep();
-            yield return new WaitForSeconds(interval);
-            StartCoroutine(SprintStepSound(sprintInterval));
-        }
-        else
-        {
-            isPlayingSprintSounds = false;
-            yield break;
+            yield return new WaitForSeconds(sprintInterval);
+            StartCoroutine(sprintSoundCoroutine);
         }
 
-    }
+        Debug.Log("reached end of sprint loop)");
+        yield break;
 
-    public IEnumerator WalkStepSound(float interval)
-    {
-        if (currentState == PlayerState.Walking )
-        {
-            if (physicsBody.velocity.x != 0f || physicsBody.velocity.y != 0f)
-           {
-                Debug.Log("Fired Walking");
-                PlayRandomStep();
-                
-            }
-            yield return new WaitForSeconds(interval);
-            StartCoroutine(WalkStepSound(walkInterval));
-
-        }
-        else
-        {
-            isPlayingWalkSounds = false;
-            yield break;
-        }
     }
 
     public IEnumerator CrouchStepSound(float interval)
@@ -221,12 +206,13 @@ public class CharacterControllerRBody : MonoBehaviour
         grapplingHook = GetComponent<GrapplePhysics>();
         audioManager = GetComponent<AudioManager>();
 
-        walkSoundCoroutine = WalkStepSound(walkInterval);
-        sprintSoundCoroutine = SprintStepSound(sprintInterval);
+        sprintSoundCoroutine = SprintStepSound();
         crouchSoundCoroutine = CrouchStepSound(crouchInterval);
 
         windLoop.volume = 0f;
         windLoop.Play();
+
+        grappleLoop.volume = 0.5f;
     }
 
     private void Update()
@@ -237,16 +223,27 @@ public class CharacterControllerRBody : MonoBehaviour
         //get player input direction
         GetInput();
 
+        
+
         //update state
         if (isGrounded)
         {
-            //Debug.Log("Player is Grounded!");
+
+            if (prevState == PlayerState.Midair)
+            {
+                jumpFall.Play();
+            }
+
+            if (Mathf.Abs(physicsBody.velocity.z) < 0.0005f && Mathf.Abs(physicsBody.velocity.x) < 0.0005f)
+            {
+                Debug.Log("Stopping Sprint Sounds");
+                StopCoroutine(sprintSoundCoroutine);
+            }
 
             //check if the player is not inputting anything and slow to zero if so
             if ((!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) && !Input.GetKey(KeyCode.Space))
             {
                 SlowToZero();
-
             }
 
             //check for walk and sprint
@@ -310,7 +307,6 @@ public class CharacterControllerRBody : MonoBehaviour
         //grappling check, overrides the current state if the GrapplePhysics object is enabled
         if (grapplingHook.isGrappling)
         {
-
             currentState = PlayerState.Grappling;
             ManageDrag(grappleDrag);
         }
@@ -323,7 +319,7 @@ public class CharacterControllerRBody : MonoBehaviour
         //wind audio loop when flying
         if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
         {
-            if (windLoop.volume < physicsBody.velocity.magnitude / 70)
+            if (windLoop.volume < physicsBody.velocity.magnitude / 90)
             {
                 windLoop.volume += 0.03f;
             }
@@ -334,15 +330,27 @@ public class CharacterControllerRBody : MonoBehaviour
 
             if (hasReachedMaxWindVolume)
             {
-                windLoop.volume = physicsBody.velocity.magnitude / 70;
+                windLoop.volume = physicsBody.velocity.magnitude / 90;
             }
             
         }
         else
         {
-
-            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.3f, 0f));
+            StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.1f, 0f));
             hasReachedMaxWindVolume = false;
+        }
+
+        //kill grapple sound if not grappling
+        if (currentState != PlayerState.Grappling)
+        {
+            if (grappleLoop.isPlaying)
+            {
+                grappleLoop.Stop();
+            }
+            if (grappleLoop.volume <= 0.01f)
+            {
+                grappleLoop.Stop();
+            }
         }
 
     }
@@ -381,39 +389,24 @@ public class CharacterControllerRBody : MonoBehaviour
         //move the player based on current player state
         switch (currentState)
         {
-            case PlayerState.Walking:
-                //this impulse force is for faster directional change
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
-                {
-                    physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
-
-                }
-                physicsBody.AddForce(movementInputDirection * walkSpeed * globalMovementMult, ForceMode.Acceleration);
-
-                //Steps
-                if (!isPlayingWalkSounds)
-                {
-                    StartCoroutine(WalkStepSound(walkInterval));
-                    isPlayingWalkSounds = true;
-                }
-
-                //pause air timer
-                airTimer.GetComponent<Timer>().paused = true;
-                break;
 
             case PlayerState.Sprinting:
                 //this impulse force is for faster directional change
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
                 {
                     physicsBody.AddForce(movementInputDirection * globalMovementMult * 2, ForceMode.Impulse);
+
+                    if (!isPlayingSprintSounds)
+                    {
+                        StartCoroutine(sprintSoundCoroutine);
+                        isPlayingSprintSounds = true;
+                    }
                 }
+                
+               
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
                 //Steps
-                if (!isPlayingSprintSounds)
-                {
-                    StartCoroutine(SprintStepSound(sprintInterval));
-                    isPlayingSprintSounds = true;
-                }
+                
 
 
                 //pause air timer
@@ -430,6 +423,9 @@ public class CharacterControllerRBody : MonoBehaviour
                     physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
                 }
 
+
+
+
                 //resume air timer
                 airTimer.GetComponent<Timer>().paused = false;
                 break;
@@ -441,6 +437,8 @@ public class CharacterControllerRBody : MonoBehaviour
                     physicsBody.AddForce(orientation.transform.forward * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
+
+
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
                 break;
@@ -450,9 +448,11 @@ public class CharacterControllerRBody : MonoBehaviour
                 physicsBody.AddForce(movementInputDirection * crouchSpeed * globalMovementMult, ForceMode.Acceleration);
                 if (!isPlayingCrouchSounds)
                 {
-                    StartCoroutine(CrouchStepSound(crouchInterval));
+                    StartCoroutine(crouchSoundCoroutine);
                     isPlayingCrouchSounds = true;
                 }
+
+
 
 
                 //pause air timer
@@ -473,11 +473,20 @@ public class CharacterControllerRBody : MonoBehaviour
 
                 physicsBody.AddForce(movementInputDirection * grappleSpeed, ForceMode.Acceleration);
 
+                if (!grappleLoop.isPlaying)
+                {
+                    grappleLoop.volume = 0.5f;
+                    grappleLoop.Play();
+                    Debug.Log("Starting Grapple Loop");
+                }
+
                 //resume air timer if in air
                 if (!isGrounded)
                     airTimer.GetComponent<Timer>().paused = false;
                 else
                     airTimer.GetComponent<Timer>().paused = true;
+
+
                 break;
 
         }
@@ -485,13 +494,19 @@ public class CharacterControllerRBody : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             physicsBody.AddForce(transform.up * jumpImpulse, ForceMode.Impulse);
-
+            jump.Play();
             //physicsBody.velocity = new Vector3(physicsBody.velocity.x, jumpImpulse/5, physicsBody.velocity.z);
         }
 
         if (isGrounded && OnSlope())
         {
             physicsBody.AddForce(slopeMovementDirection * grappleSpeed, ForceMode.Acceleration);
+        }
+
+        if (currentState != PlayerState.Sprinting)
+        {
+            StopCoroutine(sprintSoundCoroutine);
+            isPlayingSprintSounds = false;
         }
 
     }
