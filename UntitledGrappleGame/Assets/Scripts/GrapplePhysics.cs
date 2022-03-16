@@ -16,6 +16,7 @@ public class GrapplePhysics : MonoBehaviour
     RaycastHit ray;
     private bool canGrapple = false;
 
+    [SerializeField] public float grappleReach = 50f;
     [SerializeField] public float grappleStrength = 10f;
     [SerializeField] public LayerMask grappleSurfaces;
     private Vector3 grappleDirection;
@@ -46,7 +47,7 @@ public class GrapplePhysics : MonoBehaviour
     void Update()
     {
         //Knowing if the player can grapple
-        if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, 50, grappleSurfaces)) {
+        if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
             canGrapple = true;
         } else {
             canGrapple = false;

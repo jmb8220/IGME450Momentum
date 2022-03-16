@@ -250,16 +250,7 @@ public class CharacterControllerRBody : MonoBehaviour
             }
 
             //check for walk and sprint
-            if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && Input.GetKey(KeyCode.LeftShift) && currentState != PlayerState.Sliding && !Input.GetKey(KeyCode.LeftControl))
-            {
-                
-
-                currentState = PlayerState.Sprinting;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 90f, 150 * Time.deltaTime);
-                ManageDrag(groundDrag);
-            }
-            //check for arbitrary number as a minimum forward velocity to start sliding
-            else if (Input.GetKey(KeyCode.LeftControl) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
+            if (Input.GetKey(KeyCode.LeftShift) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
@@ -275,20 +266,18 @@ public class CharacterControllerRBody : MonoBehaviour
                     //Steps
                     
                 }
-                if (!Input.GetKey(KeyCode.LeftControl))
+                if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    currentState = PlayerState.Walking;
+                    currentState = PlayerState.Sprinting;
                 }
             }
-            else if (Input.GetKey(KeyCode.LeftControl))
+            else if (Input.GetKey(KeyCode.LeftShift))
             {
                 currentState = PlayerState.Crouching;
             }
             else
             {
-                
-
-                currentState = PlayerState.Walking;
+                currentState = PlayerState.Sprinting;
                 playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50 * Time.deltaTime);
                 ManageDrag(groundDrag);
             }
