@@ -130,7 +130,7 @@ public class GrapplePhysics : MonoBehaviour
         //Line renderer
         rope.gameObject.SetActive(true);
         rope.SetPosition(0, transform.position);
-        rope.SetPosition(1, grapplePosition);
+        StartCoroutine(Reel(true));
 
         //Marking the initial y position of the player
         startingY = transform.position.y;
@@ -150,10 +150,39 @@ public class GrapplePhysics : MonoBehaviour
         //Disabling grapple bool
         isGrappling = false;
 
-        rope.gameObject.SetActive(false);
+        //Reeling in
+        StartCoroutine(Reel(false));
 
         //Animation
         anim.SetTrigger("GrappleBreak");
+    }
+
+    //Grapple animation
+    IEnumerator Reel(bool shootingOut)
+    {
+        float i = 0;
+
+        while(i < 1) {
+            i += Time.deltaTime*10;
+
+            //Animating grapple point
+            if(shootingOut) {
+                //Shooting out
+                rope.SetPosition(1, Vector3.Lerp(transform.position, grapplePoint, i));
+            } else {
+                //Reeling in
+                rope.SetPosition(0, transform.position);
+                rope.SetPosition(1, Vector3.Lerp(grapplePoint, transform.position, i));
+            }
+
+            yield return null;
+        }
+
+        if(shootingOut) {
+            rope.SetPosition(1, grapplePoint);
+        } else {
+            rope.gameObject.SetActive(false);
+        }
     }
 
     public void UpdateGrappleCount()
