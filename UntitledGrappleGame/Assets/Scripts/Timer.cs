@@ -9,6 +9,8 @@ public class Timer : MonoBehaviour
 
     public bool paused;
 
+    public bool stopped;
+
     [SerializeField]
     private Text timerText;
 
@@ -22,9 +24,12 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (!paused)
+        if (!stopped)
         {
-            timer += Time.deltaTime;
+            if (!paused)
+            {
+                timer += Time.deltaTime;
+            }
         }
         UpdateTimerDisplay();
     }

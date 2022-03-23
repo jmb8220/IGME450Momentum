@@ -330,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 1
+  stopped: 1
   timerText: {fileID: 1343911789}
   marker: Air Time
 --- !u!114 &216510576
@@ -1008,6 +1009,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+--- !u!1 &580728421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 580728424}
+  - component: {fileID: 580728423}
+  - component: {fileID: 580728422}
+  m_Layer: 0
+  m_Name: TimerStop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &580728422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580728421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventHandled: 1
+  pauseEvent: 0
+  resetPos: {x: 0, y: -4, z: 0}
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  cam: {fileID: 307516219}
+--- !u!65 &580728423
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580728421}
+  m_Material: {fileID: 13400000, guid: e70a09a45438bd74e90fc1a9ea74c3f3, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.84, y: 1, z: 18.54}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &580728424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580728421}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.97, y: 25.98, z: 314.19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &690203278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,9 +1329,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetPos: {x: 0, y: 1, z: 0}
+  eventHandled: 0
+  pauseEvent: 0
+  resetPos: {x: 0, y: -4, z: 0}
   timer: {fileID: 2086466048}
   airTimer: {fileID: 216510578}
+  cam: {fileID: 0}
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3119,8 +3186,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Use WASD to move, space to jump, and left mouse to grapple. \n\nUse space
-    in the air to wall jump. Use control to slide.\n\nPress any key to continue"
+  m_Text: "Use WASD to move, SPACE to jump, and LEFT MOUSE to grapple. \n\nUse SPACE
+    in the air to wall jump. Use SHIFT to slide.\n\nPress any key to continue"
 --- !u!222 &1359409267
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3141,6 +3208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f946fb18af244884f76f0d8f6b5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  startTimer: {fileID: 2007121871}
 --- !u!1 &1404625453
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,6 +5123,69 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &2007121871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2007121874}
+  - component: {fileID: 2007121873}
+  - component: {fileID: 2007121872}
+  m_Layer: 0
+  m_Name: TimerStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2007121872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007121871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventHandled: 2
+  pauseEvent: 1
+  resetPos: {x: 0, y: -4, z: 0}
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  cam: {fileID: 307516219}
+--- !u!65 &2007121873
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007121871}
+  m_Material: {fileID: 13400000, guid: e70a09a45438bd74e90fc1a9ea74c3f3, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 40, y: 1, z: 15.6}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &2007121874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007121871}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -7.93, z: 0.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086466043
 GameObject:
   m_ObjectHideFlags: 0
@@ -5106,6 +5239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 0
+  stopped: 1
   timerText: {fileID: 1518358022}
   marker: Time
 --- !u!114 &2086466046
