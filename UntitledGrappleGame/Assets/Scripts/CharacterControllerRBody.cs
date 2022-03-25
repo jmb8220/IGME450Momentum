@@ -83,7 +83,7 @@ public class CharacterControllerRBody : MonoBehaviour
 
     //audio intervals
     float walkInterval = 0.4f;
-    float sprintInterval = 0.45f;
+    float sprintInterval = 0.38f;
     float crouchInterval = 0.65f;
 
     public AudioSource[] steps;
@@ -135,7 +135,7 @@ public class CharacterControllerRBody : MonoBehaviour
         rand1 = Random.Range(0, steps.Length);
         rand2 = Random.Range(0, clothSteps.Length);
 
-        randVolume = Random.Range(0.2f, 0.3f);
+        randVolume = Random.Range(0.1f, 0.3f);
 
         //ensure no direct repeats
         while (rand1 == prevRand1)
@@ -163,6 +163,10 @@ public class CharacterControllerRBody : MonoBehaviour
         {
             if (currentState == PlayerState.Sprinting)
             {
+                if (prevState == PlayerState.Midair)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
                 isPlayingSprintSounds = true;
                 Debug.Log("Fired Sprinting");
                 PlayRandomStep();
