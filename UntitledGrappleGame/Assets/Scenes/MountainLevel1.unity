@@ -196,7 +196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -231,12 +235,12 @@ GameObject:
   - component: {fileID: 141826256}
   - component: {fileID: 141826255}
   - component: {fileID: 141826254}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &141826254
 MeshCollider:
@@ -388,7 +392,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -484,7 +492,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -577,6 +589,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
@@ -672,7 +692,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -768,7 +792,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -862,6 +890,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
 --- !u!1 &302082362 stripped
@@ -892,12 +928,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 311355362}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &311355362
 Transform:
@@ -983,6 +1019,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
@@ -1078,7 +1122,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -1172,6 +1220,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
 --- !u!1 &493148454 stripped
@@ -1205,12 +1261,12 @@ GameObject:
   - component: {fileID: 550420664}
   - component: {fileID: 550420663}
   - component: {fileID: 550420662}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &550420662
 MeshCollider:
@@ -1362,7 +1418,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -1458,7 +1518,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -1554,7 +1618,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -1589,12 +1657,12 @@ GameObject:
   - component: {fileID: 705289865}
   - component: {fileID: 705289864}
   - component: {fileID: 705289863}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &705289863
 MeshCollider:
@@ -1746,7 +1814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -1838,7 +1910,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
@@ -1937,6 +2013,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
 --- !u!1 &819632707 stripped
@@ -2031,7 +2115,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -2123,7 +2211,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
@@ -2160,12 +2252,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 875425393}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &875425393
 Transform:
@@ -2251,6 +2343,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
@@ -2344,6 +2444,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
 --- !u!1 &953374669 stripped
@@ -2377,12 +2485,12 @@ GameObject:
   - component: {fileID: 987185793}
   - component: {fileID: 987185792}
   - component: {fileID: 987185791}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &987185791
 MeshCollider:
@@ -2530,7 +2638,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
@@ -2660,12 +2772,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1097558147}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Goal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1097558147
 Transform:
@@ -2696,12 +2808,12 @@ GameObject:
   - component: {fileID: 1157560737}
   - component: {fileID: 1157560736}
   - component: {fileID: 1157560735}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1157560735
 MeshCollider:
@@ -2851,6 +2963,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
 --- !u!1 &1169266546 stripped
@@ -2945,7 +3065,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -3039,6 +3163,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: febda3d79971d764aaf23d7adc7971cf, type: 3}
 --- !u!1 &1344549097 stripped
@@ -3072,12 +3204,12 @@ GameObject:
   - component: {fileID: 1355065500}
   - component: {fileID: 1355065499}
   - component: {fileID: 1355065498}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1355065498
 MeshCollider:
@@ -3225,7 +3357,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -3241,12 +3377,12 @@ GameObject:
   - component: {fileID: 1417440030}
   - component: {fileID: 1417440029}
   - component: {fileID: 1417440028}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1417440028
 MeshCollider:
@@ -3398,7 +3534,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -3433,12 +3573,12 @@ GameObject:
   - component: {fileID: 1507068802}
   - component: {fileID: 1507068801}
   - component: {fileID: 1507068800}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1507068800
 MeshCollider:
@@ -3588,6 +3728,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d626cd498d5004a96b891b97c9ce40, type: 3}
 --- !u!1 &1689343738 stripped
@@ -3682,7 +3830,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
@@ -3717,12 +3869,12 @@ GameObject:
   - component: {fileID: 1754148908}
   - component: {fileID: 1754148907}
   - component: {fileID: 1754148906}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1754148906
 MeshCollider:
@@ -3813,12 +3965,12 @@ GameObject:
   - component: {fileID: 1799174972}
   - component: {fileID: 1799174971}
   - component: {fileID: 1799174970}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1799174970
 MeshCollider:
@@ -3909,12 +4061,12 @@ GameObject:
   - component: {fileID: 1893497012}
   - component: {fileID: 1893497011}
   - component: {fileID: 1893497010}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1893497010
 MeshCollider:
@@ -4066,7 +4218,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e787bfb5bcaf54a8d81a0f8eba89d6, type: 3}
