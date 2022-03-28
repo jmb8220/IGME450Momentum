@@ -99,6 +99,10 @@ public class EventZone : MonoBehaviour
             else if (eventHandled == eventHandles.EndLevel)
             {
                 //Implement Level End Screen First
+                timer.GetComponent<Timer>().stopped = true;
+                airTimer.GetComponent<Timer>().stopped = true;
+                player.GetComponent<CharacterControllerRBody>().startable = false;
+                player.GetComponent<GrapplePhysics>().gUpdate = false;
             }
         }
     }
