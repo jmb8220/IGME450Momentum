@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 public class EventZone : MonoBehaviour
 {
+    private enum eventHandles{
+        Reset,
+        TimerStop,
+        TimerStart,
+        EndLevel
+    };
+
     [SerializeField]
-    private int eventHandled; // 0 = Reset | 1 = Timer Stop | 2 = Timer Start | 3 = End Level
+    private eventHandles eventHandled;
     [SerializeField]
     public bool pauseEvent;
 
@@ -20,6 +27,15 @@ public class EventZone : MonoBehaviour
     [SerializeField]
     private Camera cam;
 
+    void Update()
+    {
+        if (Input.anyKey)
+        {
+            timer.GetComponent<Timer>().stopped = false;
+            airTimer.GetComponent<Timer>().stopped = false;
+        }
+    }
+
     private void OnCollisionEnter(Collision player)
     {
         Debug.Log("Player Colliding");
@@ -27,7 +43,7 @@ public class EventZone : MonoBehaviour
         if (!pauseEvent)
         {
             //Reset Player
-            if (eventHandled == 0)
+            if (eventHandled == eventHandles.Reset)
             {
                 player.transform.position = resetPos;
 
@@ -42,19 +58,19 @@ public class EventZone : MonoBehaviour
                 airTimer.GetComponent<Timer>().ResetTimer();
             }
             //Stop Timers
-            else if (eventHandled == 1)
+            else if (eventHandled == eventHandles.TimerStop)
             {
                 timer.GetComponent<Timer>().stopped = true;
                 airTimer.GetComponent<Timer>().stopped = true;
             }
             //Start Timers
-            else if (eventHandled == 2)
+            else if (eventHandled == eventHandles.TimerStart)
             {
                 timer.GetComponent<Timer>().stopped = false;
                 airTimer.GetComponent<Timer>().stopped = false;
             }
             //End Level (To be implemented later)
-            else if (eventHandled == 3)
+            else if (eventHandled == eventHandles.EndLevel)
             {
                 //Implement Level End Screen First
             }

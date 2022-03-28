@@ -1101,9 +1101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventHandled: 0
+  pauseEvent: 0
   resetPos: {x: 0, y: 1, z: 0}
   timer: {fileID: 2086466048}
   airTimer: {fileID: 216510578}
+  cam: {fileID: 0}
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2871,6 +2874,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f946fb18af244884f76f0d8f6b5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  startTimer: {fileID: 0}
 --- !u!1 &1404625453
 GameObject:
   m_ObjectHideFlags: 0
