@@ -44,7 +44,7 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float crouchSpeed = 8f;
     [SerializeField] float airSpeed = 25f;
     [SerializeField] float grappleSpeed = 25f;
-    [SerializeField] float slideBoost = 2f;
+    [SerializeField] float slideBoost = 10f;
 
     float globalMovementMult = 10f;
     //float airMovementMult = 0.4f;
@@ -55,10 +55,10 @@ public class CharacterControllerRBody : MonoBehaviour
     float airDragUp = 1.2f;
     float airDragDown = 0.1f;
     float groundDrag = 7f;
-    float slidingDrag = 2f;
+    float slidingDrag = 6f;
     float grappleDrag = 1f;
 
-    float additionalGravity = 1.8f;
+    float additionalGravity = 8.8f;
 
     float xMovementInput;
     float zMovementInput;
@@ -168,11 +168,11 @@ public class CharacterControllerRBody : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                 }
                 isPlayingSprintSounds = true;
-                Debug.Log("Fired Sprinting");
+
                 PlayRandomStep();
                 yield return new WaitForSeconds(sprintInterval);
             }
-            Debug.Log("reached end of sprint loop");
+
             yield return null;
         }
 
@@ -224,7 +224,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 currentState = PlayerState.Idle;
             }
             //check for walk and sprint
-            else if (Input.GetKey(KeyCode.LeftShift) && physicsBody.velocity.magnitude >= 5f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
+            else if (Input.GetKeyDown(KeyCode.LeftShift) && physicsBody.velocity.magnitude >= 3f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
             {
                 //need to also move the camera down but I want it to be smooth so it's not here quite yet
                 currentState = PlayerState.Sliding;
@@ -235,7 +235,7 @@ public class CharacterControllerRBody : MonoBehaviour
             {
                 if (physicsBody.velocity.x <= 0.1f && physicsBody.velocity.y <= 0.1f)
                 {
-                    currentState = PlayerState.Crouching;
+                    currentState = PlayerState.Sprinting;
                     ManageDrag(groundDrag);
                     //Steps
                     
@@ -244,10 +244,6 @@ public class CharacterControllerRBody : MonoBehaviour
                 {
                     currentState = PlayerState.Sprinting;
                 }
-            }
-            else if (Input.GetKey(KeyCode.LeftShift))
-            {
-                currentState = PlayerState.Crouching;
             }
             else
             {
@@ -263,7 +259,7 @@ public class CharacterControllerRBody : MonoBehaviour
         {
 
             currentState = PlayerState.Midair;
-            Debug.Log("Player is In Air!");
+
             if (physicsBody.velocity.y > 0f)
             {
                 ManageDrag(airDragUp);
@@ -330,8 +326,6 @@ public class CharacterControllerRBody : MonoBehaviour
             }
         }
 
-        Debug.Log("Player is " + currentState);
-
     }
 
     //FixedUpdate follows physics ticks
@@ -396,12 +390,13 @@ public class CharacterControllerRBody : MonoBehaviour
                 physicsBody.AddForce(movementInputDirection * airSpeed, ForceMode.Acceleration);
 
                 //fall faster up to terminal velocity
+                
                 if (physicsBody.velocity.y >= -55.5f && physicsBody.velocity.y < 0f)
                 {
                     physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
                 }
 
-
+                physicsBody.AddForce(-transform.up * additionalGravity, ForceMode.Acceleration);
 
 
                 //resume air timer
@@ -413,7 +408,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 if (prevState == PlayerState.Sprinting)
                 {
                     slideBoostSound.Play();
-                    physicsBody.AddForce(orientation.transform.forward * slideBoost * globalMovementMult, ForceMode.Impulse);
+                    physicsBody.AddForce(movementInputDirection * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
 
@@ -455,7 +450,6 @@ public class CharacterControllerRBody : MonoBehaviour
                 {
                     grappleLoop.volume = 0.5f;
                     grappleLoop.Play();
-                    Debug.Log("Starting Grapple Loop");
                 }
 
                 //resume air timer if in air
