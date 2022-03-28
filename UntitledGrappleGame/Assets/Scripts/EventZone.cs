@@ -22,11 +22,8 @@ public class EventZone : MonoBehaviour
     [SerializeField]
     private Vector3 resetPos;
 
-    [SerializeField]
     private Canvas timer;
-    [SerializeField]
     private Canvas airTimer;
-    [SerializeField]
     private Camera cam;
 
     private void Start()
