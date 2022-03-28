@@ -29,6 +29,7 @@ public class CharacterControllerRBody : MonoBehaviour
     //air time text object
     [SerializeField]
     Canvas airTimer;
+    public bool startable;
 
     public PlayerState currentState;
     public PlayerState prevState;

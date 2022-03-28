@@ -1205,6 +1205,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   airTimer: {fileID: 0}
   cam: {fileID: 0}
+  startable: 1
 --- !u!65 &381883233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1213,10 +1214,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381883231}
   m_Material: {fileID: 13400000, guid: e70a09a45438bd74e90fc1a9ea74c3f3, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 9.84, y: 1, z: 18.54}
+  m_Size: {x: 39.8, y: 5, z: 10.58}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &381883234
 Transform:
@@ -1226,7 +1227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381883231}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97, y: 26.01, z: 314.19}
+  m_LocalPosition: {x: 0.09, y: 28.47, z: 319.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

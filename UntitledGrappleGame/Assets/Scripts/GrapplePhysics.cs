@@ -35,6 +35,7 @@ public class GrapplePhysics : MonoBehaviour
     //Grapple Count
     [SerializeField] private Text gCounter;
     public int gCount;
+    public bool gUpdate;
 
 
     private void Start()
@@ -63,7 +64,7 @@ public class GrapplePhysics : MonoBehaviour
                 //Shooting grapple
                 EnableGrapple(ray.point);
 
-                gCount++;
+                if(gUpdate) gCount++;
                 UpdateGrappleCount();
             }
         }

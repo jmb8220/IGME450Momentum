@@ -12,6 +12,8 @@ public class EventZone : MonoBehaviour
         EndLevel
     };
 
+    private GameManager gameManager;
+    private GameObject player;
     [SerializeField]
     private eventHandles eventHandled;
     [SerializeField]
@@ -27,19 +29,37 @@ public class EventZone : MonoBehaviour
     [SerializeField]
     private Camera cam;
 
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+        player = gameManager.player;
+        timer = gameManager.timer;
+        airTimer = gameManager.airTimer;
+        player.GetComponent<CharacterControllerRBody>().startable = true;
+        player.GetComponent<GrapplePhysics>().gUpdate = true;
+    }
     void Update()
     {
-        if (Input.anyKey)
+        if (player.GetComponent<CharacterControllerRBody>().startable)
         {
-            timer.GetComponent<Timer>().stopped = false;
-            airTimer.GetComponent<Timer>().stopped = false;
+            if (Input.anyKey)
+            {
+                timer.GetComponent<Timer>().stopped = false;
+                airTimer.GetComponent<Timer>().stopped = false;
+                player.GetComponent<GrapplePhysics>().gUpdate = true;
+            }
+        }
+        else
+        { 
+            timer.GetComponent<Timer>().stopped = true;
+            airTimer.GetComponent<Timer>().stopped = true;
+            player.GetComponent<GrapplePhysics>().gUpdate = false;
         }
     }
 
-    private void OnCollisionEnter(Collision player)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player Colliding");
-
+        Debug.Log("Player Triggered");
         if (!pauseEvent)
         {
             //Reset Player
@@ -47,27 +67,33 @@ public class EventZone : MonoBehaviour
             {
                 player.transform.position = resetPos;
 
-                player.gameObject.GetComponent<GrapplePhysics>().gCount = 0;
-                player.gameObject.GetComponent<GrapplePhysics>().UpdateGrappleCount();
-                player.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                player.GetComponent<GrapplePhysics>().gCount = 0;
+                player.GetComponent<GrapplePhysics>().UpdateGrappleCount();
+                player.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 timer.GetComponent<Timer>().stopped = true;
                 airTimer.GetComponent<Timer>().stopped = true;
 
                 timer.GetComponent<Timer>().ResetTimer();
                 airTimer.GetComponent<Timer>().ResetTimer();
+                player.GetComponent<CharacterControllerRBody>().startable = true;
+                player.GetComponent<GrapplePhysics>().gUpdate = true;
             }
             //Stop Timers
             else if (eventHandled == eventHandles.TimerStop)
             {
                 timer.GetComponent<Timer>().stopped = true;
                 airTimer.GetComponent<Timer>().stopped = true;
+                player.GetComponent<CharacterControllerRBody>().startable = false;
+                player.GetComponent<GrapplePhysics>().gUpdate = false;
             }
             //Start Timers
             else if (eventHandled == eventHandles.TimerStart)
             {
                 timer.GetComponent<Timer>().stopped = false;
                 airTimer.GetComponent<Timer>().stopped = false;
+                player.GetComponent<CharacterControllerRBody>().startable = true;
+                player.GetComponent<GrapplePhysics>().gUpdate = true;
             }
             //End Level (To be implemented later)
             else if (eventHandled == eventHandles.EndLevel)

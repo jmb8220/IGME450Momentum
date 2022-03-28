@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 1
-  stopped: 0
+  stopped: 1
   timerText: {fileID: 1343911789}
   marker: Air Time
 --- !u!114 &216510576
@@ -657,6 +657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a859e8a3de24b47a420b6544693d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  player: {fileID: 1167477566}
 --- !u!1 &341921561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1107,6 +1110,7 @@ MonoBehaviour:
   timer: {fileID: 2086466048}
   airTimer: {fileID: 216510578}
   cam: {fileID: 0}
+  startable: 1
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1114,8 +1118,8 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763462942}
-  m_Material: {fileID: 13400000, guid: e70a09a45438bd74e90fc1a9ea74c3f3, type: 2}
-  m_IsTrigger: 0
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1000, y: 1, z: 1000}
@@ -2874,9 +2878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f946fb18af244884f76f0d8f6b5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: {fileID: 2086466048}
-  airTimer: {fileID: 216510578}
-  startTimer: {fileID: 0}
 --- !u!1 &1404625453
 GameObject:
   m_ObjectHideFlags: 0
@@ -4212,7 +4213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 0
-  stopped: 0
+  stopped: 1
   timerText: {fileID: 1518358022}
   marker: Time
 --- !u!114 &2086466046
