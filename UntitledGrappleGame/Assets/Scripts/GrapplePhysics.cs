@@ -35,6 +35,7 @@ public class GrapplePhysics : MonoBehaviour
     //Grapple Count
     [SerializeField] private Text gCounter;
     public int gCount;
+    public bool gUpdate;
 
 
     private void Start()
@@ -47,22 +48,23 @@ public class GrapplePhysics : MonoBehaviour
     void Update()
     {
         //Knowing if the player can grapple
+        canGrapple = false;
         if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
-            canGrapple = true;
-        } else {
-            canGrapple = false;
+            if(ray.collider.tag == "CanGrapple") {
+                canGrapple = true;
+            }
         }
 
         //Shooting grapple
         if(Input.GetKeyDown(KeyCode.Mouse0)) {
             if(!isGrappling && canGrapple) {
-
                 //grapple sound
                 grappleShot.Play();
+
                 //Shooting grapple
                 EnableGrapple(ray.point);
 
-                gCount++;
+                if(gUpdate) gCount++;
                 UpdateGrappleCount();
             }
         }
@@ -130,7 +132,7 @@ public class GrapplePhysics : MonoBehaviour
         //Line renderer
         rope.gameObject.SetActive(true);
         rope.SetPosition(0, transform.position);
-        StartCoroutine(Reel(true));
+        StartCoroutine(Reel());
 
         //Marking the initial y position of the player
         startingY = transform.position.y;
@@ -151,14 +153,14 @@ public class GrapplePhysics : MonoBehaviour
         isGrappling = false;
 
         //Reeling in
-        StartCoroutine(Reel(false));
+        StartCoroutine(Reel());
 
         //Animation
         anim.SetTrigger("GrappleBreak");
     }
 
     //Grapple animation
-    IEnumerator Reel(bool shootingOut)
+    IEnumerator Reel()
     {
         float i = 0;
 
@@ -166,7 +168,7 @@ public class GrapplePhysics : MonoBehaviour
             i += Time.deltaTime*10;
 
             //Animating grapple point
-            if(shootingOut) {
+            if(isGrappling) {
                 //Shooting out
                 rope.SetPosition(1, Vector3.Lerp(transform.position, grapplePoint, i));
             } else {
@@ -178,7 +180,7 @@ public class GrapplePhysics : MonoBehaviour
             yield return null;
         }
 
-        if(shootingOut) {
+        if(isGrappling) {
             rope.SetPosition(1, grapplePoint);
         } else {
             rope.gameObject.SetActive(false);

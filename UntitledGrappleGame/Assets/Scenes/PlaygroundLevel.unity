@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 71135d2bee6900f4da4fcef87f66d2d3, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 71135d2bee6900f4da4fcef87f66d2d3, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -206,10 +206,10 @@ GameObject:
   - component: {fileID: 466739802}
   m_Layer: 3
   m_Name: Cylinder (2)
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!136 &466739802
 CapsuleCollider:
@@ -349,7 +349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ba0261641a01b3c42b623f0a243f6434, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ba0261641a01b3c42b623f0a243f6434, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -409,10 +409,10 @@ GameObject:
   - component: {fileID: 1508826179}
   m_Layer: 3
   m_Name: Cylinder (1)
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!136 &1508826179
 CapsuleCollider:
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 1594710456}
   m_Layer: 3
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -658,6 +658,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: afe7e25bcc7fd374d8d8e5b2eabf8627, type: 3}
+      propertyPath: m_TagString
+      value: CanGrapple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: afe7e25bcc7fd374d8d8e5b2eabf8627, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -677,7 +681,7 @@ GameObject:
   - component: {fileID: 1687148626}
   m_Layer: 3
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -788,12 +792,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1765679269}
   - component: {fileID: 1765679268}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TestVerb
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!167 &1765679268
 AudioReverbZone:
@@ -847,10 +851,10 @@ GameObject:
   - component: {fileID: 1795013947}
   m_Layer: 3
   m_Name: Cylinder (3)
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!136 &1795013947
 CapsuleCollider:
@@ -943,10 +947,10 @@ GameObject:
   - component: {fileID: 1926177673}
   m_Layer: 3
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: CanGrapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!136 &1926177673
 CapsuleCollider:
