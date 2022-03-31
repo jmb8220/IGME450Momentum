@@ -1045,9 +1045,6 @@ MonoBehaviour:
   eventHandled: 1
   pauseEvent: 0
   resetPos: {x: 0, y: -4, z: 0}
-  timer: {fileID: 2086466048}
-  airTimer: {fileID: 216510578}
-  cam: {fileID: 307516219}
 --- !u!65 &580728423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1335,9 +1332,6 @@ MonoBehaviour:
   eventHandled: 0
   pauseEvent: 0
   resetPos: {x: 0, y: -4, z: 0}
-  timer: {fileID: 2086466048}
-  airTimer: {fileID: 216510578}
-  cam: {fileID: 0}
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
