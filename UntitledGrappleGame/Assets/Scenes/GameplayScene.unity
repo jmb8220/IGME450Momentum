@@ -1107,10 +1107,6 @@ MonoBehaviour:
   eventHandled: 0
   pauseEvent: 0
   resetPos: {x: 0, y: 1, z: 0}
-  timer: {fileID: 2086466048}
-  airTimer: {fileID: 216510578}
-  cam: {fileID: 0}
-  startable: 1
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2241,6 +2237,7 @@ MonoBehaviour:
   playerCam: {fileID: 307516219}
   camContainer: {fileID: 258593526}
   airTimer: {fileID: 216510578}
+  startable: 0
   currentState: 0
   prevState: 0
   prevKeyPressed: 0
@@ -2309,6 +2306,7 @@ MonoBehaviour:
   grappleRetract: {fileID: 952198737}
   gCounter: {fileID: 1404625455}
   gCount: 0
+  gUpdate: 0
 --- !u!54 &1167477571
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2820,8 +2818,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 70}
-  m_SizeDelta: {x: 208.2526, y: 120}
+  m_AnchoredPosition: {x: 0, y: 49.3}
+  m_SizeDelta: {x: 208.2526, y: 182.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1359409266
 MonoBehaviour:
@@ -2856,8 +2854,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Use WASD to move, space to jump, and left mouse to grapple. \n\nUse space
-    in the air to wall jump. Use control to slide.\n\nPress any key to continue"
+  m_Text: "Use WASD to move \nSPACE to jump \nLEFT MOUSE to grapple. \n\nUse SPACE
+    in the air to wall jump. \nUse SHIFT to slide.\n\nPress P to return to the main
+    menu at any time\n\nPress any key to continue"
 --- !u!222 &1359409267
 CanvasRenderer:
   m_ObjectHideFlags: 0
