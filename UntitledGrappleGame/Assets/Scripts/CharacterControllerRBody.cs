@@ -50,7 +50,7 @@ public class CharacterControllerRBody : MonoBehaviour
     float globalMovementMult = 10f;
     //float airMovementMult = 0.4f;
 
-    [SerializeField] float jumpImpulse = 200f;
+    [SerializeField] float jumpImpulse = 255f;
 
     //this is friction
     float airDragUp = 1.2f;
@@ -59,7 +59,7 @@ public class CharacterControllerRBody : MonoBehaviour
     float slidingDrag = 6f;
     float grappleDrag = 1f;
 
-    float additionalGravity = 8.8f;
+    float additionalGravity = 7.6f;
 
     float xMovementInput;
     float zMovementInput;
@@ -206,7 +206,7 @@ public class CharacterControllerRBody : MonoBehaviour
         GetInput();
 
         //update state
-        if (isGrounded)
+        if (isGrounded && currentState != PlayerState.Grappling)
         {
 
             if (prevState == PlayerState.Midair)
