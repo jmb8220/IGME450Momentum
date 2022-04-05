@@ -8,6 +8,7 @@ public class GrapplePhysics : MonoBehaviour
     private Rigidbody body;
     [SerializeField] private Transform playerCam;
 
+    [SerializeField] private float aimAssistRadius = 1;
     [SerializeField] public Vector3 grapplePoint;
     public bool isGrappling = false;
     private float startingY;
@@ -49,10 +50,15 @@ public class GrapplePhysics : MonoBehaviour
     {
         //Knowing if the player can grapple
         canGrapple = false;
-        if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
-            if(ray.collider.tag == "CanGrapple") {
-                canGrapple = true;
-            }
+
+        //Detecting where the player is aiming with aim assist
+        if(!Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
+            Physics.SphereCast(playerCam.position, aimAssistRadius, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces);
+        }
+
+        //Knowing if the player can grapple
+        if(ray.collider && ray.collider.tag == "CanGrapple") {
+            canGrapple = true;
         }
 
         //Shooting grapple
