@@ -1104,9 +1104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventHandled: 0
-  pauseEvent: 0
   resetPos: {x: 0, y: 1, z: 0}
+  timer: {fileID: 0}
+  airTimer: {fileID: 0}
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2292,6 +2292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 307516217}
+  aimAssistRadius: 3
   grapplePoint: {x: 0, y: 0, z: 0}
   isGrappling: 0
   grappleReach: 35
