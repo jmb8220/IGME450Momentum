@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
+    public Vector3 resetPos;
+
     public static GameManager Instance; // A static reference to the GameManager instance
 
     void Awake()

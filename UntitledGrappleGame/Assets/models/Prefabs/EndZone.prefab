@@ -458,7 +458,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 20, y: 16, z: 20}
+  m_Size: {x: 18, y: 14, z: 18}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1449998855976192209
 MonoBehaviour:
@@ -472,9 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e3deba4f45d9744aa83139c1ee1b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventHandled: 3
+  eventHandled: 4
   pauseEvent: 0
-  resetPos: {x: 0, y: 1, z: 0}
-  timer: {fileID: 0}
-  airTimer: {fileID: 0}
-  cam: {fileID: 0}
+  startResetPos: {x: 0, y: 0, z: 0}
