@@ -94,12 +94,13 @@ public class EventZone : MonoBehaviour
                 case eventHandles.Reset:
                     player.transform.position = gameManager.resetPos;
 
-                    player.GetComponent<GrapplePhysics>().gCount = 0;
-                    player.GetComponent<GrapplePhysics>().UpdateGrappleCount();
                     player.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                     if (gameManager.resetPos == startResetPos)
                     {
+                        player.GetComponent<GrapplePhysics>().gCount = 0;
+                        player.GetComponent<GrapplePhysics>().UpdateGrappleCount();
+
                         timer.GetComponent<Timer>().stopped = true;
                         airTimer.GetComponent<Timer>().stopped = true;
 
@@ -112,6 +113,7 @@ public class EventZone : MonoBehaviour
                 case eventHandles.Checkpoint:
                     resetPos = this.transform.position;
                     gameManager.resetPos = resetPos;
+                    pauseEvent = true;
                     break;
                 case eventHandles.TimerStop:
                     timer.GetComponent<Timer>().stopped = true;
