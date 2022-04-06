@@ -211,6 +211,11 @@ public class CharacterControllerRBody : MonoBehaviour
         //check for grounding
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        //Disabling grounded if the player is clambering
+        if(currentState == PlayerState.Clambering) {
+            isGrounded = false;
+        }
+
         //get player input direction
         GetInput();
 
@@ -262,6 +267,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 ManageDrag(groundDrag);
             }
 
+            //Disabling clambering
             isClambering = false;
         }
         //midair check, clamber will come later because I've never done it before
@@ -296,6 +302,9 @@ public class CharacterControllerRBody : MonoBehaviour
         {
             currentState = PlayerState.Grappling;
             ManageDrag(grappleDrag);
+            
+            //Disabling clambering
+            isClambering = false;
         }
 
         //find different movement vector if on slope
@@ -421,8 +430,6 @@ public class CharacterControllerRBody : MonoBehaviour
                     physicsBody.AddForce(movementInputDirection * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
-
-
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
                 break;
@@ -450,6 +457,14 @@ public class CharacterControllerRBody : MonoBehaviour
                 //Increasing the clamber timer
                 clamberTimer += 3*Time.deltaTime;
 
+                transform.position = new Vector3(
+                    ClamberOrig.x + (LedgePos.x - ClamberOrig.x)*Mathf.Sin(clamberTimer*Mathf.PI/2),
+                    ClamberOrig.y + (LedgePos.y - ClamberOrig.y)*Mathf.Sin(clamberTimer*Mathf.PI/2),
+                    ClamberOrig.z + (LedgePos.z - ClamberOrig.z)*Mathf.Sin(clamberTimer*Mathf.PI/2));
+
+
+                //OLD CLAMBER CODE
+                /*
                 if(clamberTimer < 0.5f)
                 {
                     //Pulling vertically
@@ -463,6 +478,7 @@ public class CharacterControllerRBody : MonoBehaviour
                         LedgePos,
                         (clamberTimer - 0.5f)*2);
                 }
+                */
 
                 //Ending the clamber
                 if(clamberTimer >= 1)
@@ -522,7 +538,7 @@ public class CharacterControllerRBody : MonoBehaviour
         Vector3 faceDir = new Vector3(orientation.forward.x, 0, orientation.forward.z);
         faceDir = Vector3.Normalize(faceDir);
 
-        Vector3 rayPos = transform.position + (faceDir * clamberDistance/2) + new Vector3(0, clamberDistance, 0);
+        Vector3 rayPos = transform.position + (faceDir * clamberDistance/2) + new Vector3(0, clamberDistance/2, 0);
 
         RaycastHit hit;
         if(Physics.Raycast(rayPos, -transform.up, out hit, clamberDisance, clamberSurfaces))
