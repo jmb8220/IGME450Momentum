@@ -657,9 +657,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a859e8a3de24b47a420b6544693d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: {fileID: 0}
-  airTimer: {fileID: 0}
-  player: {fileID: 0}
+  timer: {fileID: 2086466048}
+  airTimer: {fileID: 216510578}
+  player: {fileID: 1167477566}
+  resetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &341921561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2570,7 +2571,6 @@ MonoBehaviour:
   clamberSurfaces:
     serializedVersion: 2
     m_Bits: 4294967295
-  clamberImpulse: 50
   speedLinesContainer: {fileID: 4286209169324461772}
   speedEffect: {fileID: 4286209169877721001}
 --- !u!114 &1167477570
@@ -2586,6 +2586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 307516217}
+  aimAssistRadius: 1
   grapplePoint: {x: 0, y: 0, z: 0}
   isGrappling: 0
   grappleReach: 35
