@@ -19,16 +19,16 @@ public enum PlayerState
 
 public class CharacterControllerRBody : MonoBehaviour
 {
+    [Header("Camera Properties")]
+
     public Transform orientation;
     public Camera playerCam;
-
     public GameObject camContainer;
 
     private AudioManager audioManager;
 
     //air time text object
-    [SerializeField]
-    Canvas airTimer;
+    [SerializeField] Canvas airTimer;
     public bool startable;
 
     public PlayerState currentState;
@@ -38,6 +38,8 @@ public class CharacterControllerRBody : MonoBehaviour
 
     //make this dynamic once it works
     public float playerHeight = 1.0f;
+
+    [Header("Movement Values")]
 
     //acceleration multipliers
     [SerializeField] float walkSpeed = 12f;
@@ -51,6 +53,8 @@ public class CharacterControllerRBody : MonoBehaviour
     //float airMovementMult = 0.4f;
 
     [SerializeField] float jumpImpulse = 255f;
+
+    [Header("Friction Values")]
 
     //this is friction
     float airDragUp = 1.2f;
@@ -68,6 +72,8 @@ public class CharacterControllerRBody : MonoBehaviour
 
     Vector3 slopeMovementDirection;
 
+    [Header("Helpers")]
+
     public Rigidbody physicsBody;
 
     public Transform groundCheck;
@@ -75,6 +81,8 @@ public class CharacterControllerRBody : MonoBehaviour
     public LayerMask groundMask;
 
     RaycastHit slopeHit;
+
+    [Header("Audio")]
 
     public AudioSource windLoop;
     public AudioSource grappleLoop;
@@ -103,12 +111,16 @@ public class CharacterControllerRBody : MonoBehaviour
 
     bool isGrounded;
     bool hasReachedMaxWindVolume;
+    
+    [Header("Clamber")]
 
     //Clamber Information
-    [SerializeField] private float clamberDistance = 5.0f;
+    [SerializeField] private float clamberDistance = 3.0f;
     [SerializeField] public LayerMask clamberSurfaces;
-    [SerializeField] float clamberImpulse = 200f;
-    private bool clambered = false;
+    private Vector3 ClamberOrig = Vector3.zero; //Position where the player started the clamber
+    private Vector3 LedgePos = Vector3.zero; //Position where the player is clambering to
+    private bool isClambering = false;
+    private float clamberTimer = 0.0f;
 
     //Grapple node
     private GrapplePhysics grapplingHook;
@@ -132,19 +144,16 @@ public class CharacterControllerRBody : MonoBehaviour
 
     void PlayRandomStep()
     {
-
         rand1 = Random.Range(0, steps.Length);
         rand2 = Random.Range(0, clothSteps.Length);
 
         randVolume = Random.Range(0.1f, 0.3f);
 
         //ensure no direct repeats
-        while (rand1 == prevRand1)
-        {
+        while (rand1 == prevRand1) {
             rand1 = Random.Range(0, steps.Length);
         }
-        while (rand2 == prevRand2)
-        {
+        while (rand2 == prevRand2) {
             rand2 = Random.Range(0, steps.Length);
         }
 
@@ -253,27 +262,31 @@ public class CharacterControllerRBody : MonoBehaviour
                 ManageDrag(groundDrag);
             }
 
-            clambered = false;
+            isClambering = false;
         }
         //midair check, clamber will come later because I've never done it before
         else if (!isGrounded)
         {
-
             currentState = PlayerState.Midair;
 
-            if (physicsBody.velocity.y > 0f)
-            {
+            //Changing drag based on fall direction
+            if (physicsBody.velocity.y > 0f) {
                 ManageDrag(airDragUp);
-            }
-            else
-            {
+            } else {
                 ManageDrag(airDragDown);
             }
 
-            RaycastHit clamberWall;
-
-            if (Physics.Raycast(transform.position, playerCam.transform.forward, out clamberWall, clamberDistance, clamberSurfaces) && Input.GetKeyDown(KeyCode.Space) && !clambered)
+            //Clamber check
+            if(!isClambering)
             {
+                LedgePos = CanClamber(clamberDistance);
+                if (LedgePos != Vector3.zero) {
+                    currentState = PlayerState.Clambering;
+                    isClambering = true;
+                    clamberTimer = 0.0f;
+                    ClamberOrig = transform.position;
+                }
+            } else {
                 currentState = PlayerState.Clambering;
             }
         }
@@ -332,11 +345,12 @@ public class CharacterControllerRBody : MonoBehaviour
     //FixedUpdate follows physics ticks
     private void FixedUpdate()
     {
-
+        //Executing state
         MovePlayer();
 
         prevState = currentState;
 
+        //Effects
         SpeedLines();
 
     }
@@ -359,11 +373,9 @@ public class CharacterControllerRBody : MonoBehaviour
 
     void MovePlayer()
     {
-
         //move the player based on current player state
         switch (currentState)
         {
-
             case PlayerState.Sprinting:
                 //this impulse force is for faster directional change
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
@@ -376,12 +388,9 @@ public class CharacterControllerRBody : MonoBehaviour
                     }
                 }
                 
-               
                 physicsBody.AddForce(movementInputDirection * sprintSpeed * globalMovementMult, ForceMode.Acceleration);
                 //Steps
                 
-
-
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
                 break;
@@ -435,9 +444,32 @@ public class CharacterControllerRBody : MonoBehaviour
 
 
             case PlayerState.Clambering:
-                physicsBody.AddForce(transform.up * clamberImpulse, ForceMode.Impulse);
+                //Healting movement
+                physicsBody.velocity = Vector3.zero;
 
-                clambered = true;
+                //Increasing the clamber timer
+                clamberTimer += 5*Time.deltaTime;
+
+                if(clamberTimer < 0.5f)
+                {
+                    //Pulling vertically
+                    transform.position = Vector3.Lerp(ClamberOrig,
+                        new Vector3(ClamberOrig.x, LedgePos.y, ClamberOrig.z),
+                        clamberTimer*2);
+                } else if(clamberTimer <= 1)
+                {
+                    //Pulling horizontally
+                    transform.position = Vector3.Lerp(new Vector3(ClamberOrig.x, LedgePos.y, ClamberOrig.z),
+                        LedgePos,
+                        (clamberTimer - 0.5f)*2);
+                }
+
+                //Ending the clamber
+                if(clamberTimer >= 1)
+                {
+                    isClambering = false;
+                    LedgePos = Vector3.zero;
+                }
 
                 //pause air timer
                 airTimer.GetComponent<Timer>().paused = true;
@@ -482,6 +514,21 @@ public class CharacterControllerRBody : MonoBehaviour
         }
 
     }
+
+    //Checking if the player can clamber
+    Vector3 CanClamber(float clamberDisance)
+    {
+        Vector3 rayPos = transform.position + (orientation.forward * clamberDistance/2) + (orientation.up * clamberDistance);
+
+        RaycastHit hit;
+        if(Physics.Raycast(rayPos, -transform.up, out hit, clamberDisance, clamberSurfaces))
+        {
+            return hit.point + new Vector3(0, playerHeight*2, 0);
+        }
+
+        return Vector3.zero;
+    }
+
 
     //slow the player to zero on no input when grounded, makes feel snappier
     void SlowToZero()
