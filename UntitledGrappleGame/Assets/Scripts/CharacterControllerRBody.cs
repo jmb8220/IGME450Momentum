@@ -448,7 +448,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 physicsBody.velocity = Vector3.zero;
 
                 //Increasing the clamber timer
-                clamberTimer += 5*Time.deltaTime;
+                clamberTimer += 3*Time.deltaTime;
 
                 if(clamberTimer < 0.5f)
                 {
@@ -518,7 +518,11 @@ public class CharacterControllerRBody : MonoBehaviour
     //Checking if the player can clamber
     Vector3 CanClamber(float clamberDisance)
     {
-        Vector3 rayPos = transform.position + (orientation.forward * clamberDistance/2) + (orientation.up * clamberDistance);
+        //Player straight orientation
+        Vector3 faceDir = new Vector3(orientation.forward.x, 0, orientation.forward.z);
+        faceDir = Vector3.Normalize(faceDir);
+
+        Vector3 rayPos = transform.position + (faceDir * clamberDistance/2) + new Vector3(0, clamberDistance, 0);
 
         RaycastHit hit;
         if(Physics.Raycast(rayPos, -transform.up, out hit, clamberDisance, clamberSurfaces))
