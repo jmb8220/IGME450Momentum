@@ -81,6 +81,9 @@ public class EventZone : MonoBehaviour
         airTimer.GetComponent<Timer>().ResetTimer();
         player.GetComponent<CharacterControllerRBody>().startable = true;
         player.GetComponent<GrapplePhysics>().gUpdate = true;
+
+        if (eventHandled == eventHandles.Checkpoint)
+            pauseEvent = false;
     }
 
     private void OnTriggerEnter(Collider other)
