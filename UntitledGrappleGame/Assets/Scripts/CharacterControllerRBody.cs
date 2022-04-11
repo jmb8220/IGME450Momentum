@@ -220,8 +220,9 @@ public class CharacterControllerRBody : MonoBehaviour
         GetInput();
 
         //update state
-        if (isGrounded && currentState != PlayerState.Grappling)
+        if (isGrounded && !grapplingHook.isGrappling)
         {
+            isGrounded = true;
 
             if (prevState == PlayerState.Midair)
             {
