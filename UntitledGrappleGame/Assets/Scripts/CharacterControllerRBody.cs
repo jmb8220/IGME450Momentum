@@ -286,12 +286,15 @@ public class CharacterControllerRBody : MonoBehaviour
             //Clamber check
             if(!isClambering)
             {
-                LedgePos = CanClamber(clamberDistance);
-                if (LedgePos != Vector3.zero) {
-                    currentState = PlayerState.Clambering;
-                    isClambering = true;
-                    clamberTimer = 0.0f;
-                    ClamberOrig = transform.position;
+                //Checking if the player can clamber
+                if(zMovementInput > 0) {
+                    LedgePos = CanClamber(clamberDistance);
+                    if (LedgePos != Vector3.zero) {
+                        currentState = PlayerState.Clambering;
+                        isClambering = true;
+                        clamberTimer = 0.0f;
+                        ClamberOrig = transform.position;
+                    }
                 }
             } else {
                 currentState = PlayerState.Clambering;
