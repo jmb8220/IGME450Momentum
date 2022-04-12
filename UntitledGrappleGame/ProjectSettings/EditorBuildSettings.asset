@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MountainLevel2.unity
     guid: 53a756c450c65134f8a511d6f4f7a963
+  - enabled: 1
+    path: Assets/Scenes/Desert3.unity
+    guid: 7a83edc1f9530624f922ffad2ef44972
   m_configObjects: {}
