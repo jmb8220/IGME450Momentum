@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 834153490}
-  m_IndirectSpecularColor: {r: 0.17825079, g: 0.22318858, b: 0.30523813, a: 1}
+  m_IndirectSpecularColor: {r: 0.17506765, g: 0.2190134, b: 0.30131215, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2220,6 +2220,7 @@ MonoBehaviour:
   grappleSurfaces:
     serializedVersion: 2
     m_Bits: 8
+  coolDownLength: 0.5
   grappleTimeLength: 4
   rope: {fileID: 854674944}
   anim: {fileID: 1953752080}
