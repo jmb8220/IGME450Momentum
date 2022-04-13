@@ -51,6 +51,5 @@ public class GameManager : MonoBehaviour
         Instance = null;
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene(0);
-
     }
 }
