@@ -544,13 +544,24 @@ public class CharacterControllerRBody : MonoBehaviour
 
         Vector3 rayPos = transform.position + (faceDir * clamberDistance/2) + new Vector3(0, clamberDistance/2, 0);
 
-        RaycastHit hit;
-        if(Physics.Raycast(rayPos, -transform.up, out hit, clamberDisance, clamberSurfaces))
+        RaycastHit hitVertical;
+        RaycastHit hitHorizontal;
+
+        //Detecting the top of the ledge
+        if(!Physics.Raycast(rayPos, -transform.up, out hitVertical, clamberDisance, clamberSurfaces))
         {
-            return hit.point + new Vector3(0, playerHeight*2, 0);
+            return Vector3.zero;
         }
 
-        return Vector3.zero;
+        //Checking to make sure nothing is blocking the ledge
+        Physics.Raycast(transform.position, faceDir, out hitHorizontal, clamberDisance/2, clamberSurfaces);
+
+        if(hitVertical.collider != hitHorizontal.collider)
+        {
+            return Vector3.zero;
+        }
+
+        return hitVertical.point + new Vector3(0, playerHeight*2, 0);
     }
 
 
