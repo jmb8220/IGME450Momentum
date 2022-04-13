@@ -13,12 +13,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text sensValLabel;
     [SerializeField] private Slider sensSlider;
 
-    public float sensitivity = 100;
-
     // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
+        sensSlider.value = CrossScript.sensitivity;
+        UpdateSensitivity();
     }
     void Update()
     {
@@ -54,7 +54,7 @@ public class MenuManager : MonoBehaviour
 
     public void UpdateSensitivity()
     {
-        sensitivity = sensSlider.value;
-        sensValLabel.text = sensitivity.ToString("F1");
+        CrossScript.sensitivity = sensSlider.value;
+        sensValLabel.text = CrossScript.sensitivity.ToString("F1");
     }
 }

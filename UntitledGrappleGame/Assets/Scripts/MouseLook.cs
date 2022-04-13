@@ -6,7 +6,6 @@ public class MouseLook : MonoBehaviour
 {
     float mouseX;
     float mouseY;
-    public float sensitivity = 100f;
 
     public Transform playerBody;
     public Transform playerOrientation;
@@ -23,8 +22,8 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * CrossScript.sensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * CrossScript.sensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
