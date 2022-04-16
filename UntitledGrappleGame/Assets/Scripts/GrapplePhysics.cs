@@ -20,9 +20,7 @@ public class GrapplePhysics : MonoBehaviour
     [SerializeField] public float grappleReach = 50f;
     [SerializeField] public float grappleStrength = 10f;
     [SerializeField] public LayerMask grappleSurfaces;
-    [SerializeField] public float coolDownLength = 1f;
     private Vector3 grappleDirection;
-    private float coolDownTimer;
 
     //Breaking grapple options
     [SerializeField] private float grappleTimeLength = 4;
@@ -49,8 +47,6 @@ public class GrapplePhysics : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         UpdateGrappleCount();
-
-        coolDownTimer = Time.time;
     }
 
     // Update is called once per frame
@@ -59,18 +55,13 @@ public class GrapplePhysics : MonoBehaviour
         //Knowing if the player can grapple
         canGrapple = false;
 
-        //Cooldown
-        if(coolDownTimer <= Time.time) {
+        //Detecting where the player is aiming with aim assist
+        if(!Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
+            Physics.SphereCast(playerCam.position, aimAssistRadius, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces);
+        }
 
-            //Detecting where the player is aiming with aim assist
-            if(!Physics.Raycast(playerCam.position, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces)) {
-                Physics.SphereCast(playerCam.position, aimAssistRadius, playerCam.transform.forward, out ray, grappleReach, grappleSurfaces);
-            }
-
-            //Knowing if the player can grapple
-            if(ray.collider && ray.collider.tag == "CanGrapple") {
-                canGrapple = true;
-            }
+        if(ray.collider && ray.collider.tag == "CanGrapple") {
+            canGrapple = true;
         }
 
         //Shooting grapple
@@ -124,17 +115,11 @@ public class GrapplePhysics : MonoBehaviour
 
         //Increasing vertical strength when moving up
         if(grappleDirection.y > 0) {
-            grappleDirection = new Vector3(grappleDirection.x, grappleDirection.y*3, grappleDirection.z);
+            grappleDirection = new Vector3(grappleDirection.x, grappleDirection.y*3.5f, grappleDirection.z);
         }
 
         //Applying force
         body.AddForce(grappleDirection*grappleStrength);
-
-        //Ending the grapple
-        if(Vector3.Distance(transform.position, grapplePoint) < 2)
-        {
-            DisableGrapple();
-        }
 
         //Updating the line renderer
         rope.SetPosition(0, transform.position);
@@ -143,8 +128,8 @@ public class GrapplePhysics : MonoBehaviour
     public void EnableGrapple(Vector3 grapplePosition)
     {
         //Setting the position and enabling the bool
-        grapplePoint = grapplePosition;
         isGrappling = true;
+        grapplePoint = grapplePosition;
 
         //Enabling the timer
         grappleTimer = Time.time + grappleTimeLength;
@@ -163,8 +148,9 @@ public class GrapplePhysics : MonoBehaviour
 
     public void DisableGrapple()
     {
-        //Disabling grapple bool
-        isGrappling = false;
+        //Making sure the player is grappling before breaking
+        if(!isGrappling)
+            return;
 
         //Reeling in
         StartCoroutine(Reel());
@@ -172,8 +158,8 @@ public class GrapplePhysics : MonoBehaviour
         //Animation
         anim.SetTrigger("GrappleBreak");
 
-        //Applying cooldown
-        coolDownTimer = Time.time + coolDownLength;
+        //Disabling grapple bool
+        isGrappling = false;
     }
 
     //Grapple animation

@@ -119,7 +119,6 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] public LayerMask clamberSurfaces;
     private Vector3 ClamberOrig = Vector3.zero; //Position where the player started the clamber
     private Vector3 LedgePos = Vector3.zero; //Position where the player is clambering to
-    private bool isClambering = false;
     private float clamberTimer = 0.0f;
 
     //Grapple node
@@ -219,96 +218,12 @@ public class CharacterControllerRBody : MonoBehaviour
         //get player input direction
         GetInput();
 
-        //update state
-        if (isGrounded && !grapplingHook.isGrappling)
-        {
-            isGrounded = true;
+        //Updating the state
+        UpdateState();
 
-            if (prevState == PlayerState.Midair)
-            {
-                jumpFall.Play();
-            }
-
-            if ((physicsBody.velocity.x < 0.1f && physicsBody.velocity.z < 0.1f))
-            {
-                currentState = PlayerState.Idle;
-            }
-            //check if the player is not inputting anything and slow to zero if so
-            if ((!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) && !Input.GetKey(KeyCode.Space))
-            {
-                SlowToZero();
-                currentState = PlayerState.Idle;
-            }
-            //check for walk and sprint
-            else if (Input.GetKeyDown(KeyCode.LeftShift) && physicsBody.velocity.magnitude >= 3f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair))
-            {
-                //need to also move the camera down but I want it to be smooth so it's not here quite yet
-                currentState = PlayerState.Sliding;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 95f, 150 * Time.deltaTime);
-                ManageDrag(slidingDrag);
-            }
-            else if (currentState == PlayerState.Sliding)
-            {
-                if (physicsBody.velocity.x <= 0.1f && physicsBody.velocity.y <= 0.1f)
-                {
-                    currentState = PlayerState.Sprinting;
-                    ManageDrag(groundDrag);
-                    //Steps
-                    
-                }
-                if (!Input.GetKey(KeyCode.LeftShift))
-                {
-                    currentState = PlayerState.Sprinting;
-                }
-            }
-            else
-            {
-                currentState = PlayerState.Sprinting;
-                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50 * Time.deltaTime);
-                ManageDrag(groundDrag);
-            }
-
-            //Disabling clambering
-            isClambering = false;
-        }
-        //midair check, clamber will come later because I've never done it before
-        else if (!isGrounded)
-        {
-            currentState = PlayerState.Midair;
-
-            //Changing drag based on fall direction
-            if (physicsBody.velocity.y > 0f) {
-                ManageDrag(airDragUp);
-            } else {
-                ManageDrag(airDragDown);
-            }
-
-            //Clamber check
-            if(!isClambering)
-            {
-                //Checking if the player can clamber
-                if(zMovementInput > 0) {
-                    LedgePos = CanClamber(clamberDistance);
-                    if (LedgePos != Vector3.zero) {
-                        currentState = PlayerState.Clambering;
-                        isClambering = true;
-                        clamberTimer = 0.0f;
-                        ClamberOrig = transform.position;
-                    }
-                }
-            } else {
-                currentState = PlayerState.Clambering;
-            }
-        }
-
-        //grappling check, overrides the current state if the GrapplePhysics object is enabled
-        if (grapplingHook.isGrappling)
-        {
-            currentState = PlayerState.Grappling;
-            ManageDrag(grappleDrag);
-            
-            //Disabling clambering
-            isClambering = false;
+        //Playing landing sound
+        if (isGrounded && prevState == PlayerState.Midair) {
+            jumpFall.Play();
         }
 
         //find different movement vector if on slope
@@ -317,25 +232,18 @@ public class CharacterControllerRBody : MonoBehaviour
 
 
         //wind audio loop when flying
-        if ((currentState == PlayerState.Grappling || currentState == PlayerState.Midair))
-        {
-            if (windLoop.volume < physicsBody.velocity.magnitude / 90)
-            {
+        if (currentState == PlayerState.Grappling || currentState == PlayerState.Midair) {
+            if (windLoop.volume < physicsBody.velocity.magnitude/90) {
                 windLoop.volume += 0.03f;
-            }
-            else
-            {
+            } else {
                 hasReachedMaxWindVolume = true;
             }
 
-            if (hasReachedMaxWindVolume)
-            {
-                windLoop.volume = physicsBody.velocity.magnitude / 90;
+            if (hasReachedMaxWindVolume) {
+                windLoop.volume = physicsBody.velocity.magnitude/90;
             }
             
-        }
-        else
-        {
+        } else {
             StartCoroutine(FadeAudioSource.StartFade(windLoop, 1.1f, 0f));
             hasReachedMaxWindVolume = false;
         }
@@ -354,6 +262,94 @@ public class CharacterControllerRBody : MonoBehaviour
         }
 
     }
+
+    private void UpdateState()
+    {
+        //CLAMBER (overrides any other state)
+        if(currentState == PlayerState.Clambering) {
+            return;
+        } else if(Input.GetKey(KeyCode.Space) && !isGrounded) {
+            //Checking if the player can clamber
+            LedgePos = CanClamber(clamberDistance);
+            if (LedgePos != Vector3.zero) {
+                currentState = PlayerState.Clambering;
+                clamberTimer = 0.0f;
+                ClamberOrig = transform.position;
+
+                //Disabling the grapple
+                grapplingHook.DisableGrapple();
+
+                return;
+            }
+        }
+
+        //GRAPPLING STATE
+        if (grapplingHook.isGrappling) {
+            currentState = PlayerState.Grappling;
+            ManageDrag(grappleDrag);
+            return;
+        }
+
+        //NON-OVERRIDE STATES
+        if(isGrounded) {
+            //Updating drag
+            ManageDrag(groundDrag);
+
+            //IDLE
+            if (physicsBody.velocity.x < 0.1f && physicsBody.velocity.z < 0.1f) {
+                currentState = PlayerState.Idle;
+            }
+
+            //Check if the player isn't inputting anything and slow to zero if so
+            if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.Space)) {
+                SlowToZero();
+                currentState = PlayerState.Idle;
+                return;
+            }
+
+            //SLIDING
+            if (Input.GetKeyDown(KeyCode.LeftShift) && physicsBody.velocity.magnitude >= 3f && (prevState == PlayerState.Sprinting || prevState == PlayerState.Midair)) {
+                //need to also move the camera down but I want it to be smooth so it's not here quite yet
+                currentState = PlayerState.Sliding;
+                playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 95f, 150 * Time.deltaTime);
+                ManageDrag(slidingDrag);
+                return;
+            }
+            //Ending slide
+            if(currentState == PlayerState.Sliding) {
+                if (physicsBody.velocity.x <= 0.1f && physicsBody.velocity.y <= 0.1f) {
+                    currentState = PlayerState.Sprinting;
+                    ManageDrag(groundDrag);
+                    return;
+                }
+                if (!Input.GetKey(KeyCode.LeftShift)) {
+                    currentState = PlayerState.Sprinting;
+                    return;
+                }
+            }
+
+            //SPRINTING
+            currentState = PlayerState.Sprinting;
+            playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, 80f, 50 * Time.deltaTime);
+            return;
+
+        //AIRBORN STATES
+        } else {
+            //MIDAIR
+            currentState = PlayerState.Midair;
+
+            //Changing drag based on fall direction
+            if (physicsBody.velocity.y > 0f) {
+                ManageDrag(airDragUp);
+            } else {
+                ManageDrag(airDragDown);
+            }
+
+            return;
+        }
+    }
+
+
 
     //FixedUpdate follows physics ticks
     private void FixedUpdate()
@@ -461,33 +457,16 @@ public class CharacterControllerRBody : MonoBehaviour
                 //Increasing the clamber timer
                 clamberTimer += 3*Time.deltaTime;
 
+                //Moving the player's position to the target
                 transform.position = new Vector3(
                     ClamberOrig.x + (LedgePos.x - ClamberOrig.x)*Mathf.Sin(clamberTimer*Mathf.PI/2),
                     ClamberOrig.y + (LedgePos.y - ClamberOrig.y)*Mathf.Sin(clamberTimer*Mathf.PI/2),
                     ClamberOrig.z + (LedgePos.z - ClamberOrig.z)*Mathf.Sin(clamberTimer*Mathf.PI/2));
 
-
-                //OLD CLAMBER CODE
-                /*
-                if(clamberTimer < 0.5f)
-                {
-                    //Pulling vertically
-                    transform.position = Vector3.Lerp(ClamberOrig,
-                        new Vector3(ClamberOrig.x, LedgePos.y, ClamberOrig.z),
-                        clamberTimer*2);
-                } else if(clamberTimer <= 1)
-                {
-                    //Pulling horizontally
-                    transform.position = Vector3.Lerp(new Vector3(ClamberOrig.x, LedgePos.y, ClamberOrig.z),
-                        LedgePos,
-                        (clamberTimer - 0.5f)*2);
-                }
-                */
-
                 //Ending the clamber
                 if(clamberTimer >= 1)
                 {
-                    isClambering = false;
+                    currentState = PlayerState.Midair;
                     LedgePos = Vector3.zero;
                 }
 
@@ -496,9 +475,10 @@ public class CharacterControllerRBody : MonoBehaviour
                 break;
 
             case PlayerState.Grappling:
-
+                //Air control
                 physicsBody.AddForce(movementInputDirection * grappleSpeed, ForceMode.Acceleration);
 
+                //Audio
                 if (!grappleLoop.isPlaying)
                 {
                     grappleLoop.volume = 0.5f;
@@ -513,9 +493,9 @@ public class CharacterControllerRBody : MonoBehaviour
 
 
                 break;
-
         }
 
+        //Jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             physicsBody.AddForce(transform.up * jumpImpulse, ForceMode.Impulse);
@@ -523,11 +503,13 @@ public class CharacterControllerRBody : MonoBehaviour
             //physicsBody.velocity = new Vector3(physicsBody.velocity.x, jumpImpulse/5, physicsBody.velocity.z);
         }
 
+        //Slope handle
         if (isGrounded && OnSlope())
         {
             physicsBody.AddForce(slopeMovementDirection * grappleSpeed, ForceMode.Acceleration);
         }
 
+        //Disabling spring audio
         if (currentState != PlayerState.Sprinting)
         {
             isPlayingSprintSounds = false;
