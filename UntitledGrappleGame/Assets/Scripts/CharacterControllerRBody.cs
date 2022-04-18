@@ -47,7 +47,7 @@ public class CharacterControllerRBody : MonoBehaviour
     [SerializeField] float crouchSpeed = 8f;
     [SerializeField] float airSpeed = 25f;
     [SerializeField] float grappleSpeed = 25f;
-    [SerializeField] float slideBoost = 10f;
+    [SerializeField] float slideBoost = 7f;
 
     float globalMovementMult = 10f;
     //float airMovementMult = 0.4f;
@@ -60,7 +60,7 @@ public class CharacterControllerRBody : MonoBehaviour
     float airDragUp = 1.2f;
     float airDragDown = 0.1f;
     float groundDrag = 7f;
-    float slidingDrag = 6f;
+    float slidingDrag = 1f;
     float grappleDrag = 1f;
 
     float additionalGravity = 7.6f;
@@ -427,7 +427,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 if (prevState == PlayerState.Sprinting)
                 {
                     slideBoostSound.Play();
-                    physicsBody.AddForce(movementInputDirection * slideBoost * globalMovementMult, ForceMode.Impulse);
+                    physicsBody.AddForce(orientation.transform.forward * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
                 //pause air timer
