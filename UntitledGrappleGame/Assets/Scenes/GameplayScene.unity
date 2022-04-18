@@ -531,7 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d0399e742f6b24b913ef535483d69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 160
   playerBody: {fileID: 258593528}
   playerOrientation: {fileID: 341921562}
 --- !u!1 &312797930
@@ -653,7 +652,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 833f30b24dc41a44ba50f5bbeef0e53e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 540a1aaedf3d2314e902826487d8754b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.385
   m_Pitch: 1
@@ -2220,15 +2219,14 @@ MonoBehaviour:
   grappleSurfaces:
     serializedVersion: 2
     m_Bits: 8
-  coolDownLength: 0.5
   grappleTimeLength: 4
   rope: {fileID: 854674944}
   anim: {fileID: 1953752080}
-  grappleShot: {fileID: 900504590}
-  grappleRetract: {fileID: 952198737}
   gCounter: {fileID: 1404625455}
   gCount: 0
   gUpdate: 0
+  grappleShot: {fileID: 900504590}
+  grappleRetract: {fileID: 952198737}
 --- !u!54 &1167477571
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4123,7 +4121,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 11dd121b88b011b41af7314f942cdd12, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 182f8bf1209bf1143a7acaae522299f5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.38
   m_Pitch: 1
