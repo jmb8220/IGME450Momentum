@@ -31,6 +31,7 @@ public class GrapplePhysics : MonoBehaviour
     //Effects
     [SerializeField] private LineRenderer rope;
     [SerializeField] private Animator anim;
+    private Transform hookMesh;
 
     //Grapple Count
     [SerializeField] private Text gCounter;
@@ -47,6 +48,9 @@ public class GrapplePhysics : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         UpdateGrappleCount();
+
+        //Getting the hook mesh
+        hookMesh = rope.gameObject.transform.GetChild(0);
     }
 
     // Update is called once per frame
@@ -91,6 +95,14 @@ public class GrapplePhysics : MonoBehaviour
 
         //Crosshair animation
         anim.SetBool("CanGrapple", canGrapple);
+
+        //Grapple display
+        if(isGrappling) {
+            //Updating the line renderer
+            rope.SetPosition(0, transform.position);
+            hookMesh.position = grapplePoint;
+            hookMesh.LookAt(hookMesh.position + grappleDirection, Vector3.up);
+        }
     }
 
     private void FixedUpdate()
@@ -120,9 +132,6 @@ public class GrapplePhysics : MonoBehaviour
 
         //Applying force
         body.AddForce(grappleDirection*grappleStrength);
-
-        //Updating the line renderer
-        rope.SetPosition(0, transform.position);
     }
 
     public void EnableGrapple(Vector3 grapplePosition)
@@ -167,24 +176,32 @@ public class GrapplePhysics : MonoBehaviour
     {
         float i = 0;
 
+        Vector3 tempPos;
+
         while(i < 1) {
             i += Time.deltaTime*10;
 
             //Animating grapple point
             if(isGrappling) {
                 //Shooting out
-                rope.SetPosition(1, Vector3.Lerp(transform.position, grapplePoint, i));
+                tempPos = Vector3.Lerp(transform.position, grapplePoint, i);
             } else {
                 //Reeling in
+                tempPos = Vector3.Lerp(grapplePoint, transform.position, i);
                 rope.SetPosition(0, transform.position);
-                rope.SetPosition(1, Vector3.Lerp(grapplePoint, transform.position, i));
             }
+
+            //Updating positions
+            rope.SetPosition(1, tempPos);
+            hookMesh.LookAt(grapplePoint);
+            hookMesh.position = tempPos;
 
             yield return null;
         }
 
         if(isGrappling) {
             rope.SetPosition(1, grapplePoint);
+            hookMesh.position = grapplePoint;
         } else {
             rope.gameObject.SetActive(false);
         }
