@@ -474,4 +474,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventHandled: 4
   pauseEvent: 0
-  startResetPos: {x: 0, y: 0, z: 0}
+  resetPos: {x: 0, y: 2, z: 0}

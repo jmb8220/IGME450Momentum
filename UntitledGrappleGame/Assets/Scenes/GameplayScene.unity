@@ -580,7 +580,7 @@ MonoBehaviour:
   timer: {fileID: 2086466048}
   airTimer: {fileID: 216510578}
   player: {fileID: 1167477566}
-  resetPos: {x: 0, y: 1, z: 0}
+  resetPos: {x: 0, y: 2, z: 0}
 --- !u!1 &341921561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,7 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventHandled: 0
   pauseEvent: 0
-  resetPos: {x: 0, y: 0, z: 0}
+  resetPos: {x: 0, y: 2, z: 0}
 --- !u!65 &763462944
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -59,3 +59,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventHandled: 1
   pauseEvent: 0
+  resetPos: {x: 0, y: 2, z: 0}
