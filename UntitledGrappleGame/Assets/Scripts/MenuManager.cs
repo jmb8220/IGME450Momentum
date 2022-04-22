@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour
 
     public void LoadLevel(int levelVal)
     {
+        CrossScript.currentLevelIndex = levelVal+1;
         SceneManager.LoadScene(1); //1 is the gameplay scene
         SceneManager.LoadScene(levelVal + 1, LoadSceneMode.Additive);
         //levelVal corresponds with the number on the level button

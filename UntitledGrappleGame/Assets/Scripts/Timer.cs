@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    private float timer;
+    public float timer;
 
     public bool paused;
 
     public bool stopped;
 
     [SerializeField]
-    private Text timerText;
+    public Text timerText;
 
     [SerializeField]
     private string marker;

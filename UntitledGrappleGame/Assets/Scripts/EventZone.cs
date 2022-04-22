@@ -25,6 +25,9 @@ public class EventZone : MonoBehaviour
     private Canvas airTimer;
     private Camera cam;
 
+    private Text endTimer;
+    private Text endAirTimer;
+
     [SerializeField]
     private Vector3 resetPos;
     private Vector3 startResetPos;
@@ -35,10 +38,13 @@ public class EventZone : MonoBehaviour
         player = gameManager.player;
         timer = gameManager.timer;
         airTimer = gameManager.airTimer;
+        endTimer = gameManager.endTimer;
+        endAirTimer = gameManager.endAirTimer;
         player.GetComponent<CharacterControllerRBody>().startable = true;
         player.GetComponent<GrapplePhysics>().gUpdate = true;
         gameManager.resetPos = resetPos;
         startResetPos = resetPos;
+        CrossScript.checkReached = false;
     }
     void Update()
     {
@@ -57,33 +63,6 @@ public class EventZone : MonoBehaviour
             airTimer.GetComponent<Timer>().stopped = true;
             player.GetComponent<GrapplePhysics>().gUpdate = false;
         }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ResetGame();
-        }
-    }
-
-    private void ResetGame()
-    {
-        resetPos = startResetPos;
-        gameManager.resetPos = resetPos;
-        player.transform.position = gameManager.resetPos;
-
-        player.GetComponent<GrapplePhysics>().gCount = 0;
-        player.GetComponent<GrapplePhysics>().UpdateGrappleCount();
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-        timer.GetComponent<Timer>().stopped = true;
-        airTimer.GetComponent<Timer>().stopped = true;
-
-        timer.GetComponent<Timer>().ResetTimer();
-        airTimer.GetComponent<Timer>().ResetTimer();
-        player.GetComponent<CharacterControllerRBody>().startable = true;
-        player.GetComponent<GrapplePhysics>().gUpdate = true;
-
-        if (eventHandled == eventHandles.Checkpoint)
-            pauseEvent = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -99,7 +78,7 @@ public class EventZone : MonoBehaviour
 
                     player.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
-                    if (gameManager.resetPos == startResetPos)
+                    if (!CrossScript.checkReached)
                     {
                         player.GetComponent<GrapplePhysics>().gCount = 0;
                         player.GetComponent<GrapplePhysics>().UpdateGrappleCount();
@@ -117,6 +96,7 @@ public class EventZone : MonoBehaviour
                     resetPos = this.transform.position;
                     gameManager.resetPos = resetPos;
                     pauseEvent = true;
+                    CrossScript.checkReached = true;
                     break;
                 case eventHandles.TimerStop:
                     timer.GetComponent<Timer>().stopped = true;
@@ -131,13 +111,13 @@ public class EventZone : MonoBehaviour
                     player.GetComponent<GrapplePhysics>().gUpdate = true;
                     break;
                 case eventHandles.EndLevel:
-                    //Implement Level End Screen First
-                    timer.GetComponent<Timer>().stopped = true;
-                    airTimer.GetComponent<Timer>().stopped = true;
-                    player.GetComponent<CharacterControllerRBody>().startable = false;
-                    player.GetComponent<GrapplePhysics>().gUpdate = false;
-                    resetPos = startResetPos;
-                    gameManager.resetPos = resetPos;
+                    endTimer.text = timer.GetComponent<Timer>().timerText.text;
+                    endAirTimer.text = airTimer.GetComponent<Timer>().timerText.text;
+                    Time.timeScale = 0;
+                    AudioListener.pause = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    CrossScript.gameOver = true;
+                    CrossScript.EndScene.SetActive(true);
                     break;
             }
         }

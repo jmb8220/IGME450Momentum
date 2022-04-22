@@ -35,6 +35,7 @@ public class GrapplePhysics : MonoBehaviour
 
     //Grapple Count
     [SerializeField] private Text gCounter;
+    [SerializeField] private Text endgCounter;
     public int gCount;
     public bool gUpdate;
 
@@ -210,5 +211,6 @@ public class GrapplePhysics : MonoBehaviour
     public void UpdateGrappleCount()
     {
         gCounter.text = "Grapples Used: " + gCount;
+        endgCounter.text = gCounter.text;
     }
 }
