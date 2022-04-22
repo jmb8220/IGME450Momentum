@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.5783197, g: 0.6175635, b: 0.7169812, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: a308b3bc2fcc72245b6d802fa66f381c, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 834153490}
-  m_IndirectSpecularColor: {r: 0.17506765, g: 0.2190134, b: 0.30131215, a: 1}
+  m_IndirectSpecularColor: {r: 0.19628891, g: 0.7060546, b: 0.50292915, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -198,6 +198,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90749680}
   m_CullTransparentMesh: 1
+--- !u!1 &184065581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 184065582}
+  - component: {fileID: 184065583}
+  m_Layer: 6
+  m_Name: PostProcessing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &184065582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184065581}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 258593528}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &184065583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184065581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 39158f1297a26214195ca147da02c1dc, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1 &216510573
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +405,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 307516217}
+  - {fileID: 184065582}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -447,6 +496,7 @@ GameObject:
   - component: {fileID: 307516219}
   - component: {fileID: 307516218}
   - component: {fileID: 307516220}
+  - component: {fileID: 307516221}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -533,6 +583,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 258593528}
   playerOrientation: {fileID: 341921562}
+--- !u!114 &307516221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307516216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 307516217}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 1
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!1 &312797930
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +1021,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e262a6ae5fec2144c97eced2ad87f629, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.477
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1665,9 +1775,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 30f01d82280ef34459c951d5d7cde52c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9d6832b9a18c21845b11105b25569526, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.192
+  m_Volume: 0.88
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1792,7 +1902,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d63391c27a8054a40803e286f1e5bc46, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f5e332541b67bd544ad57cfa72652912, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.762
   m_Pitch: 1
@@ -2070,9 +2180,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 243242d57c9d1c143857b98453a29fd3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1a69556126858d5409ebc88028064b66, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.192
+  m_Volume: 0.88
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2359,9 +2469,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 091b9e02f9902c4438d885464313e086, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 334079a98df55e24890d2aa8d414b932, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.192
+  m_Volume: 0.88
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2565,9 +2675,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4eafa08e87efc694696c3c66045457de, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 79afc496bc93aad4d8d39e2458011d53, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.192
+  m_Volume: 0.88
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2694,7 +2804,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: be1d093649b248b4a89c93b58f95f23e, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.477
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3146,9 +3256,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: be2ad6402151d1d438d5317475d56cb9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a21c49d287527794d908e8b762481f25, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.192
+  m_Volume: 0.88
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3712,7 +3822,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1f8416d85dc19d64eb4e7ad071f82c5c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.477
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3886,7 +3996,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 54627598f0b741640a7274dcb32f3e17, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.477
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4013,7 +4123,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 391fdaf1ff37b97438811baea7c96b4c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.477
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
