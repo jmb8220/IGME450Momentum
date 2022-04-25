@@ -427,7 +427,7 @@ public class CharacterControllerRBody : MonoBehaviour
                 if (prevState == PlayerState.Sprinting)
                 {
                     slideBoostSound.Play();
-                    physicsBody.AddForce(orientation.transform.forward * slideBoost * globalMovementMult, ForceMode.Impulse);
+                    physicsBody.AddForce((movementInputDirection + orientation.transform.forward) * slideBoost * globalMovementMult, ForceMode.Impulse);
                 }
 
                 //pause air timer
