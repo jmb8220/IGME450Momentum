@@ -9,4 +9,5 @@ public static class CrossScript
     public static bool checkReached;
     public static GameObject EndScene;
     public static bool gameOver;
+    public static bool pauseGrapple;
 }

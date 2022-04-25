@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         CrossScript.EndScene = EndScene;
         CrossScript.gameOver = false;
+        CrossScript.pauseGrapple = false;
     }
     void Update()
     {
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0;
+        CrossScript.pauseGrapple = true;
         AudioListener.pause = true;
         Cursor.lockState = CursorLockMode.None;
         PauseMenu.SetActive(true);
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1;
+        CrossScript.pauseGrapple = false;
         AudioListener.pause = false;
         Cursor.lockState = CursorLockMode.Locked;
         PauseMenu.SetActive(false);

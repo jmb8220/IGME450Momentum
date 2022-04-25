@@ -113,7 +113,10 @@ public class EventZone : MonoBehaviour
                 case eventHandles.EndLevel:
                     endTimer.text = timer.GetComponent<Timer>().timerText.text;
                     endAirTimer.text = airTimer.GetComponent<Timer>().timerText.text;
+                    timer.GetComponent<Canvas>().enabled = false;
+                    airTimer.GetComponent<Canvas>().enabled = false;
                     Time.timeScale = 0;
+                    CrossScript.pauseGrapple = true;
                     AudioListener.pause = true;
                     Cursor.lockState = CursorLockMode.None;
                     CrossScript.gameOver = true;

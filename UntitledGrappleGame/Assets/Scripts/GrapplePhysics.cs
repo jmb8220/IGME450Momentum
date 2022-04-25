@@ -57,6 +57,10 @@ public class GrapplePhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (CrossScript.gameOver)
+            gCounter.text = "";
+        if (CrossScript.pauseGrapple)
+            return;
         //Knowing if the player can grapple
         canGrapple = false;
 
