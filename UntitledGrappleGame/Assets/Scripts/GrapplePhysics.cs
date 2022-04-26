@@ -131,8 +131,10 @@ public class GrapplePhysics : MonoBehaviour
         grappleDirection.Normalize();
 
         //Increasing vertical strength when moving up
-        if(grappleDirection.y > 0) {
+        if(transform.position.y < grapplePoint.y - 3) {
             grappleDirection = new Vector3(grappleDirection.x, grappleDirection.y*3.5f, grappleDirection.z);
+        } else {
+            grappleDirection = new Vector3(grappleDirection.x*1.5f, grappleDirection.y*3.5f, grappleDirection.z*1.5f);
         }
 
         //Applying force
